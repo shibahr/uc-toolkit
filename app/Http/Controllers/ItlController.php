@@ -18,7 +18,6 @@ class ItlController extends Controller
     public function index()
     {
         $itls = Itl::all();
-
         return view('itl.index', compact('itls'));
     }
 
@@ -39,7 +38,7 @@ class ItlController extends Controller
      */
     public function store()
     {
-        //
+        dd('Here');
     }
 
     /**

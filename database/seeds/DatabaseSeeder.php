@@ -1,10 +1,19 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 
 class DatabaseSeeder extends Seeder
 {
+
+    /**
+     * @var array
+     */
+    protected $tables = [
+        'users', 'phones', 'itls'
+    ];
+
     /**
      * Run the database seeds.
      *
@@ -14,8 +23,43 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-         $this->call('UserTableSeeder');
+        $this->cleanDatabase();
+
+        // Create the Admin User
+        DB::table('users')->insert([
+            'name' => 'Admin',
+            'email' => 'admin@admin.com',
+            'password' => bcrypt('password'),
+            'remember_token' => str_random(10),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ]);
+
+        factory(App\User::class, 19)->create();
+        factory(App\Phone::class, 20)->create();
+        factory(App\Itl::class, 20)->create();
+
 
         Model::reguard();
+    }
+
+     /**
+      * Clean out the database for a new seed generation
+      */
+    private function cleanDatabase()
+    {
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+        foreach($this->tables as $table)
+        {
+
+            DB::table($table)->truncate();
+
+        }
+
+        DB::statement('SET FOREIGN_KEY_CHECKS=1');
+
+
     }
 }

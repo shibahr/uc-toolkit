@@ -7,9 +7,11 @@
             <h3>Itl <small>» Listing</small></h3>
         </div>
         <div class="col-md-6 text-right">
-            <a href="/itl/create" class="btn btn-success btn-md">
-                <i class="fa fa-plus-circle"></i> Erase ITLs
-            </a>
+            <button type="button" class="btn btn-success btn-md"
+                      onclick="erase_itl()">
+                <i class="fa fa-plus-circle fa-lg"></i>
+                Erase ITLs
+          </button>
         </div>
     </div>
 
@@ -21,18 +23,17 @@
                 <tr>
                     <th>Phone Name</th>
                     <th>Phone Description</th>
-                    <th>IP Address</th>
-                    <th>Status</th>
+                    <th>Created At</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($itls as $itl)
                 <tr>
+                    <td>{{ $itl->phone->mac }}</td>
+                    <td>{{ $itl->phone->description}}</td>
                     <td data-order="{{ $itl->created_at->timestamp }}">
                         {{ $itl->created_at->format('j-M-y g:ia') }}
                     </td>
-                    <td>{{ $itl->title }}</td>
-                    <td>{{ $itl->subtitle }}</td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -43,12 +44,19 @@
 </div>
 @stop
 
+@include('itl._modal')
+
 @section('scripts')
 <script>
+    // Confirm file delete
+    function erase_itl() {
+      $("#modal-erase-itl").modal("show");
+    }
+    // DataTable
     $(function() {
-        $("#itls-table").DataTable({
-            order: [[0, "desc"]]
+            $("#itls-table").DataTable({
+                order: [[0, "desc"]]
+            });
         });
-    });
 </script>
 @stop
