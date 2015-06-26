@@ -29,7 +29,7 @@ class EraseItl extends Job implements SelfHandling
         $this->macAddress = $macAddress;
 
         $this->axl = new AxlSoap(
-            base_path() . env('CUCM_AXL_WSDL'),
+            app_path() . env('CUCM_AXL_WSDL'),
             env('CUCM_AXL_LOCATION'),
             env('CUCM_LOGIN'),
             env('CUCM_PASS')
