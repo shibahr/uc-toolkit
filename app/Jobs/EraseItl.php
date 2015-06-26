@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\Jobs\Job;
 use App\Phone;
 use App\Services\AxlSoap;
+use App\Services\RisSoap;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Facades\Storage;
 use SoapClient;
@@ -28,8 +29,15 @@ class EraseItl extends Job implements SelfHandling
         $this->macAddress = $macAddress;
 
         $this->axl = new AxlSoap(
-            base_path() . env('CUCM_WSDL'),
-            env('CUCM_LOCATION'),
+            base_path() . env('CUCM_AXL_WSDL'),
+            env('CUCM_AXL_LOCATION'),
+            env('CUCM_LOGIN'),
+            env('CUCM_PASS')
+        );
+
+        $this->sxml = new RisSoap(
+            base_path() . env('CUCM_SXML_WSDL'),
+            env('CUCM_SXML_LOCATION'),
             env('CUCM_LOGIN'),
             env('CUCM_PASS')
         );
@@ -43,31 +51,20 @@ class EraseItl extends Job implements SelfHandling
      */
     public function handle()
     {
+
+        if(!is_array($this->macAddress))
+        {
+            $deviceArray[] = $this->macAddress;
+        } else {
+            $deviceArray = $this->macAddress;
+        }
+
         //Get Device Description
         $r = $this->axl->getPhone($this->macAddress);
         $phoneObj = $r->return->phone;
 
-        /*
-         * Save the phone
-         * We'll record this event regardless
-         * of the outcome.
-         */
-        $p = Phone::firstOrCreate([
-            'mac' => $this->macAddress,
-            'description' => $phoneObj->description
-        ]);
-
-        //Create the ITL record for the phone
-        $i = $p->itl()->create([]);
-
         //Get App User
         $appUserObj = $this->axl->getAppUser(env('CUCM_LOGIN'));
-
-        /*
-         * The 'createDeviceArray' function
-         * needs an array of devices
-         */
-        $deviceArray[] = $this->macAddress;
 
         //Create Device Array
         $s = createDeviceArray($appUserObj,$deviceArray);
@@ -75,12 +72,14 @@ class EraseItl extends Job implements SelfHandling
         //Associate Devices
         $r = $this->axl->updateAppUser(env('CUCM_LOGIN'),$s);
 
-        $i->result = 'Success';
-        $i->save();
+        //Create RIS Port Phone Array
+        $risArray = createRisPhoneArray($deviceArray);
 
-        return;
-        //Create Phone Array
         //Get Device IP
+        $res = $this->sxml->getDeviceIp($risArray);
+        dd($res);
+
         //Process RIS Results
+        $r = processRisResults($res,$risArray);
     }
 }

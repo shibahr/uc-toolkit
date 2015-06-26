@@ -3,8 +3,9 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Artisan;
 use SoapClient;
+use SoapFault;
 
-class AxlSoap {
+class RisSoap {
 
     /**
      * @var resource
@@ -67,49 +68,45 @@ class AxlSoap {
     }
 
     /**
-     * @param $userId
-     * @return mixed
+     * @param $phoneArray
+     * @return bool|\Exception|\SoapFault
      */
-    public function getPhone($macAddress)
+    public function getDeviceIp($phoneArray)
     {
         try {
-            return $this->client->getPhone([
-                'name' => $macAddress
+            $response = $this->client->SelectCmDevice('',[
+                'MaxReturnedDevices'=>'1000',
+                'Class'=>'Phone',
+                'Model'=>'255',
+                'Status'=>'Any',
+                'NodeName'=>'',
+                'SelectBy'=>'Name',
+                'SelectItems'=>
+                    $phoneArray
             ]);
-        } catch(\SoapFault $E) {
+        } catch (SoapFault $E) {
 
+            // Loop if we get a RISPort error for exceeding maximum calls in 1 minute
+            if (preg_match('/^AxisFault: Exceeded allowed rate for Reatime information/',$E->faultstring))
+            {
+                sleep(30);
+                $this->getDeviceIp($phoneArray);
+            }
             return $E;
         }
-    }
+        /*
+         * No Errors
+         * Process Results
+         */
+        $SelectCmDeviceResult = $response["SelectCmDeviceResult"];
 
-    /**
-     * @param $appUserId
-     * @return \Exception|\SoapFault
-     */
-    public function getAppUser($appUserId)
-    {
-        try {
-            return $this->client->getAppUser([
-                'userid' => $appUserId
-            ]);
-        } catch(\SoapFault $E) {
-
-            return $E;
+        /*
+         * Return results if they exist
+         * Or return false
+         */
+        if ($SelectCmDeviceResult->CmNodes) {
+            return $SelectCmDeviceResult->CmNodes;
         }
-    }
-
-    public function updateAppUser($appUserId,$devices)
-    {
-        try {
-            return $this->client->updateAppUser([
-                'userid' => $appUserId,
-                'associatedDevices' => [
-                    'device' => $devices
-                ]
-            ]);
-        } catch(\SoapFault $E) {
-
-            return $E;
-        }
+        return false;
     }
 }

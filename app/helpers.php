@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @param $userObj
+ * @param $deviceList
+ * @return array
+ */
 function createDeviceArray($userObj,$deviceList)
 {
     //$device array to be returned
@@ -57,4 +62,69 @@ function createDeviceArray($userObj,$deviceList)
     $devices = array_values($devices);
 
     return $devices;
+}
+
+/**
+ * @param $phones
+ * @return array
+ */
+function createRisPhoneArray($phones)
+{
+    $deviceArray = [];
+
+    foreach ($phones as $i)
+    {
+        $deviceArray[]['Item'] = $i;
+    }
+    return $deviceArray;
+}
+
+/**
+ * @param $risResults
+ * @param $phoneArray
+ * @return mixed
+ */
+function processRisResults($risResults,$phoneArray)
+{
+    $i = 0;
+
+    foreach (array_chunk($phoneArray,1000,true) as $chunk)
+    {
+        foreach($chunk as $k => $v)
+        {
+            $deviceAndIp[$i]['DeviceName'] = $v['Item'];
+
+            foreach ($risResults as $cmNode)
+            {
+                if (!isset($cmNode->CmDevices[0])) continue;
+
+                $deviceAndIp[$i]['IpAddress'] = searchForIp($cmNode->CmDevices,$deviceAndIp[$i]['DeviceName']);
+
+                if (filter_var($deviceAndIp[$i]['IpAddress'], FILTER_VALIDATE_IP)) break;
+            }
+            if (!$deviceAndIp[$i]['IpAddress'])
+            {
+                $deviceAndIp[$i]['IpAddress'] = "Unregistered/Unknown";
+            }
+            $i++;
+        }
+    }
+    return $deviceAndIp;
+}
+
+/**
+ * @param $array
+ * @param $value
+ * @return bool
+ */
+function searchForIp($array,$value)
+{
+    foreach ($array as $device)
+    {
+        if ($device->Name == $value && $device->Status == "Registered")
+        {
+            return $device->IpAddress;
+        }
+    }
+    return false;
 }
