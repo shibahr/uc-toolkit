@@ -20,7 +20,7 @@ $factory->define(App\User::class, function ($faker) {
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
         'created_at' => Carbon::now(),
-        'updated_at' => Carbon::now()
+        'updated_at' => $faker->dateTimeThisMonth($max = 'now')
     ];
 });
 
@@ -29,18 +29,20 @@ $factory->define(App\Phone::class, function ($faker) {
 
     return [
         'mac' => 'SEP' . strtoupper($faker->regexify('[0-9A-Fa-f]{12}')),
-        'description' => $faker->text($maxNbChars = 30),
+        'description' => $faker->realText($maxNbChars = 30, $indexSize = 2),
         'created_at' => Carbon::now(),
-        'updated_at' => Carbon::now()
+        'updated_at' => $faker->dateTimeThisMonth($max = 'now')
     ];
 });
 
 $factory->define(App\Itl::class, function ($faker) {
 
+    $passFail = $faker->shuffle(['Success','Fail']);
 
     return [
         'phone_id' => $faker->numberBetween($min = 1, $max = 20),
+        'result' => $passFail[0],
         'created_at' => Carbon::now(),
-        'updated_at' => Carbon::now()
+        'updated_at' => $faker->dateTimeThisMonth($max = 'now')
     ];
 });

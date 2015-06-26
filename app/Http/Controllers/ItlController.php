@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Itl;
+use App\Jobs\EraseItl;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
 
 class ItlController extends Controller
 {
@@ -36,9 +38,13 @@ class ItlController extends Controller
      *
      * @return Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        dd('Here');
+        $this->dispatch(
+            new EraseItl($request->input('macAddress'))
+        );
+
+        return redirect('itl');
     }
 
     /**

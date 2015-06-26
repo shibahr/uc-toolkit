@@ -14,10 +14,9 @@ class CreateItlsTable extends Migration
     {
         Schema::create('itls', function (Blueprint $table) {
             $table->increments('id');
-
             $table->integer('phone_id')->unsigned();
             $table->foreign('phone_id')->references('id')->on('phones');
-
+            $table->string('result');
             $table->timestamps();
         });
     }

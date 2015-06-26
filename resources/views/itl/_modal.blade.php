@@ -18,7 +18,7 @@
               MAC Address
             </label>
             <div class="col-sm-8">
-              <input type="text" id="new_folder_name" name="new_folder"
+              <input type="text" id="macAddress" name="macAddress"
                      class="form-control">
             </div>
           </div>

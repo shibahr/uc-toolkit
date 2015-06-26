@@ -23,7 +23,8 @@
                 <tr>
                     <th>Phone Name</th>
                     <th>Phone Description</th>
-                    <th>Created At</th>
+                    <th>Last Updated At</th>
+                    <th>Result</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -32,8 +33,9 @@
                     <td>{{ $itl->phone->mac }}</td>
                     <td>{{ $itl->phone->description}}</td>
                     <td data-order="{{ $itl->created_at->timestamp }}">
-                        {{ $itl->created_at->format('j-M-y g:ia') }}
+                        {{ $itl->updated_at->toDayDateTimeString() }}
                     </td>
+                    <td>{{ $itl->result }}</td>
                 </tr>
                 @endforeach
                 </tbody>
