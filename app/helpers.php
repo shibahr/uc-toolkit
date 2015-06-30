@@ -94,15 +94,18 @@ function processRisResults($risResults,$phoneArray)
         {
             $deviceAndIp[$i]['DeviceName'] = $v['Item'];
 
-            foreach ($risResults as $cmNode)
+            if(isset($risResults->CmNodes))
             {
-                if (!isset($cmNode->CmDevices[0])) continue;
+                foreach ($risResults->CmNodes as $cmNode)
+                {
+                    if (!isset($cmNode->CmDevices[0])) continue;
 
-                $deviceAndIp[$i]['IpAddress'] = searchForIp($cmNode->CmDevices,$deviceAndIp[$i]['DeviceName']);
+                    list($deviceAndIp[$i]['IpAddress'],$deviceAndIp[$i]['Description'],$deviceAndIp[$i]['Product']) = searchForIp($cmNode->CmDevices,$deviceAndIp[$i]['DeviceName']);
 
-                if (filter_var($deviceAndIp[$i]['IpAddress'], FILTER_VALIDATE_IP)) break;
+                    if (filter_var($deviceAndIp[$i]['IpAddress'], FILTER_VALIDATE_IP)) break;
+                }
             }
-            if (!$deviceAndIp[$i]['IpAddress'])
+            if (!isset($deviceAndIp[$i]['IpAddress']))
             {
                 $deviceAndIp[$i]['IpAddress'] = "Unregistered/Unknown";
             }
@@ -119,12 +122,108 @@ function processRisResults($risResults,$phoneArray)
  */
 function searchForIp($array,$value)
 {
-    foreach ($array as $device)
+
+    foreach($array as $device)
     {
-        if ($device->Name == $value && $device->Status == "Registered")
+        if($device->Name == $value && $device->Status == "Registered")
         {
-            return $device->IpAddress;
+            return [$device->IpAddress,$device->Description,$device->Product];
         }
     }
     return false;
+}
+
+/**
+ * @param $model
+ * @param $logger
+ * @return array
+ */
+function setITLKeys($model)
+{
+    switch ($model){
+
+        case "Cisco 7911": // This sequence for a 7911 actually deletes the ITL.  It's here for testing
+            return  [
+
+                'Init:Applications',
+                'Key:Applications',
+                'Key:KeyPad3',
+                'Key:KeyPad4',
+                'Key:KeyPad5',
+                'Key:KeyPad2',
+                'Key:Soft4',
+                'Key:Soft2',
+                'Key:Sleep',
+                'Key:KeyPadStar',
+                'Key:KeyPadStar',
+                'Key:KeyPadPound',
+                'Key:Sleep',
+                'Key:Soft4',
+                'Key:Soft2',
+                'Init:Applications',
+
+            ];
+            break;
+
+        case "Cisco 7945": //Fall Through
+        case "Cisco 7965":
+            return  [
+
+                'Init:Settings',
+                'Key:Settings',
+                'Key:KeyPad4',
+                'Key:KeyPad5',
+                'Key:KeyPad2',
+                'Key:Soft4',
+                'Key:Sleep',
+                'Key:KeyPadStar',
+                'Key:KeyPadStar',
+                'Key:KeyPadPound',
+                'Key:Sleep',
+                'Key:Soft4',
+                'Init:Services'
+            ];
+            break;
+        case "Cisco 7975":
+            return  [
+
+                'Init:Settings',
+                'Key:Settings',
+                'Key:KeyPad4',
+                'Key:KeyPad5',
+                'Key:KeyPad2',
+                'Key:Soft5',
+                'Key:Sleep',
+                'Key:KeyPadStar',
+                'Key:KeyPadStar',
+                'Key:KeyPadPound',
+                'Key:Sleep',
+                'Key:Soft5',
+                'Init:Services'
+            ];
+            break;
+
+        case "Cisco 8961": //Fall through
+        case "Cisco 9951": //Fall through
+        case "Cisco 7937": //Fall through
+        case "Cisco 9971":
+            return [
+
+                'Key:NavBack',
+                'Key:NavBack',
+                'Key:NavBack',
+                'Key:NavBack',
+                'Key:NavBack',
+                'Key:Applications',
+                'Key:KeyPad4',
+                'Key:KeyPad4',
+                'Key:KeyPad4',
+                'Key:Soft3',
+            ];
+            break;
+
+        default:
+            $logger->error("ITL-> No model found for ",[$model]);
+            return \Response::json('', 500);
+    }
 }
