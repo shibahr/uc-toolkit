@@ -3,6 +3,7 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Artisan;
 use SoapClient;
+use SoapFault;
 
 class AxlSoap {
 
@@ -76,9 +77,11 @@ class AxlSoap {
             return $this->client->getPhone([
                 'name' => $macAddress
             ]);
-        } catch(\SoapFault $E) {
+        } catch(SoapFault $E) {
 
+            dd($E);
             return $E;
+
         }
     }
 
@@ -92,9 +95,16 @@ class AxlSoap {
             return $this->client->getAppUser([
                 'userid' => $appUserId
             ]);
-        } catch(\SoapFault $E) {
+        } catch(SoapFault $E) {
 
+            dd($E);
             return $E;
+//            var_dump($E->getMessage());
+//            var_dump($E->getPrevious());
+//            var_dump($E->getCode());
+//            var_dump($E->getFile());
+//            var_dump($E->getLine());
+//            die;
         }
     }
 
@@ -107,8 +117,9 @@ class AxlSoap {
                     'device' => $devices
                 ]
             ]);
-        } catch(\SoapFault $E) {
+        } catch(SoapFault $E) {
 
+            dd($E);
             return $E;
         }
     }

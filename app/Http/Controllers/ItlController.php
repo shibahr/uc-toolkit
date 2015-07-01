@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Log;
+use Laracasts\Flash\Flash;
 
 class ItlController extends Controller
 {
@@ -30,6 +32,7 @@ class ItlController extends Controller
     public function index()
     {
         $itls = Itl::all();
+
         return view('itl.index', compact('itls'));
     }
 
@@ -50,6 +53,8 @@ class ItlController extends Controller
      */
     public function store(Request $request)
     {
+        Log::info('Received ITL Erase request for: '.$request->input('macAddress'));
+
         $this->dispatch(
             new EraseItl($request->input('macAddress'))
         );

@@ -13,6 +13,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ClientException;
+use Illuminate\Support\Facades\Log;
 
 class PhoneDialer {
 
@@ -49,8 +50,6 @@ class PhoneDialer {
                 continue;
             }
 
-            $p = '192.168.1.2';
-
             $xml = 'XML=<CiscoIPPhoneExecute><ExecuteItem Priority="0" URL="' . $k . '"/></CiscoIPPhoneExecute>';
 
             try {
@@ -67,6 +66,7 @@ class PhoneDialer {
                 elseif($e instanceof ConnectException)
                 {
                     //Can't Connect
+                    Log::error('Connection Exception', [$e]);
                     dd('Connection Exception');
                 }
                 else
@@ -76,6 +76,7 @@ class PhoneDialer {
                 }
 
             }
+            Log::info('dial(),null', [$response->getBody()]);
         }
         return true;
     }

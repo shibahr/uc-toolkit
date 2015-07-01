@@ -46,7 +46,7 @@
 </div>
 @stop
 
-@include('itl._modal')
+@include('itl.layout.modal')
 
 @section('scripts')
 <script>

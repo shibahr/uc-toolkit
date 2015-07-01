@@ -7,8 +7,8 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.1.*",
-        "bestmomo/scafold": "dev-master",
-        "guzzlehttp/guzzle": "^6.0@dev"
+        "guzzlehttp/guzzle": "^6.0@dev",
+        "laracasts/flash": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

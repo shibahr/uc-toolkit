@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 
+use Laracasts\Flash\Flash;
+
 class HomeController extends Controller
 {
     /**
@@ -21,6 +23,7 @@ class HomeController extends Controller
      */
     public function index()
     {
+        Flash::success('Welcome Back!');
         return view('home');
     }
 }

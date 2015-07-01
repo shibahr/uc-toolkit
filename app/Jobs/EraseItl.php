@@ -8,6 +8,7 @@ use App\Services\AxlSoap;
 use App\Services\PhoneDialer;
 use App\Services\RisSoap;
 use Illuminate\Contracts\Bus\SelfHandling;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use SoapClient;
 
@@ -57,32 +58,53 @@ class EraseItl extends Job implements SelfHandling
         if(!is_array($this->macAddress))
         {
             $deviceArray[] = $this->macAddress;
+
         } else {
+
             $deviceArray = $this->macAddress;
+
         }
 
         //Get App User
         $appUserObj = $this->axl->getAppUser(env('CUCM_LOGIN'));
+        Log::info('getAppUser(),$appUserObj,', [$appUserObj]);
 
         //Create Device Array
         $appUserDeviceArray = createDeviceArray($appUserObj,$deviceArray);
+        Log::info('createDeviceArray(),$appUserDeviceArray,', [$appUserDeviceArray]);
 
         //Associate Devices to App User
-        $this->axl->updateAppUser(env('CUCM_LOGIN'),$appUserDeviceArray);
+        $res = $this->axl->updateAppUser(env('CUCM_LOGIN'),$appUserDeviceArray);
+        Log::info('updateAppUser(),$res,', [$res]);
 
         //Create RIS Port Phone Array
         $risArray = createRisPhoneArray($deviceArray);
+        Log::info('createRisPhoneArray(),$risArray,', [$risArray]);
 
         //Get Device IP's from RIS Port
         $SelectCmDeviceResult = $this->sxml->getDeviceIp($risArray);
+        Log::info('getDeviceIp(),$SelectCmDeviceResult,', [$SelectCmDeviceResult]);
 
         //Process RIS Port Results
         $risPortResults = processRisResults($SelectCmDeviceResult,$risArray);
+        Log::info('processRisResults(),$risPortResults,', [$risPortResults]);
 
         //Loop Devices and erase ITL
         foreach($risPortResults as $device)
         {
+            Phone::create([
+                'mac' => $this->macAddress,
+                'description' => $device['Description']
+            ]);
+
+            if($device['IpAddress'] == "Unregistered/Unknown")
+            {
+                Log::info('Device Unknown/Unregistered.', [$device]);
+                continue;
+            }
+
             $keys = setITLKeys('Cisco 7975');
+            Log::info('setITLKeys(),$keys', [$keys]);
 
             // Temp workaround for AO NAT
             $device['IpAddress'] = "10.134.173.108";
