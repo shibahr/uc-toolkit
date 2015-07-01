@@ -30,14 +30,14 @@ class EraseItl extends Job implements SelfHandling
         $this->macAddress = $macAddress;
 
         $this->axl = new AxlSoap(
-            app_path() . env('CUCM_AXL_WSDL'),
+            app_path() . '/CiscoAPI/axl/schema/8.5/AXLAPI.wsdl',
             env('CUCM_AXL_LOCATION'),
             env('CUCM_LOGIN'),
             env('CUCM_PASS')
         );
 
         $this->sxml = new RisSoap(
-            app_path() . env('CUCM_SXML_WSDL'),
+            app_path() . '/CiscoAPI/sxml/schema/RISAPI.wsdl',
             env('CUCM_SXML_LOCATION'),
             env('CUCM_LOGIN'),
             env('CUCM_PASS')
@@ -78,10 +78,14 @@ class EraseItl extends Job implements SelfHandling
 
         //Process RIS Port Results
         $risPortResults = processRisResults($SelectCmDeviceResult,$risArray);
+
         //Loop Devices and erase ITL
         foreach($risPortResults as $device)
         {
-            $keys = setITLKeys('Cisco 7965');
+            $keys = setITLKeys('Cisco 7975');
+
+            // Temp workaround for AO NAT
+            $device['IpAddress'] = "10.134.173.108";
 
             $dialer = new PhoneDialer($device['IpAddress']);
 
