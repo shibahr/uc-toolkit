@@ -10,6 +10,7 @@ namespace App\Services;
 
 
 use GuzzleHttp\Client;
+use Sabre\Xml\Reader;
 use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Exception\ClientException;
@@ -42,6 +43,9 @@ class PhoneDialer {
 
     public function dial($keys,$p)
     {
+        $reader = new Reader;
+        $return = true;
+
         foreach ($keys as $k)
         {
             if ( $k == "Key:Sleep")
@@ -76,9 +80,19 @@ class PhoneDialer {
                 }
 
             }
-            Log::info('dial(),response', [$response->getBody()]);
+
+            /*
+             * Check our response code and flip
+             * $return to false if non zero
+             */
+            $reader->xml($response->getBody()->getContents());
+            $response = $reader->parse();
+            if(! $response['value'][0]['attributes']['Status'] == 0) $return = false;
+
+            Log::info('dial(),response', [$response]);
+
         }
-        return true;
+        return $return;
     }
 
 }

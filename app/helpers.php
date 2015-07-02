@@ -167,6 +167,7 @@ function setITLKeys($model)
             break;
 
         case "Cisco 7945": //Fall Through
+        case "Cisco 7961": //Fall Through
         case "Cisco 7965":
             return  [
 
@@ -224,7 +225,7 @@ function setITLKeys($model)
             break;
 
         default:
-            $logger->error("ITL-> No model found for ",[$model]);
-            return \Response::json('', 500);
+            Log::error("ITL-> No model found for " . $model);
+            return false;
     }
 }

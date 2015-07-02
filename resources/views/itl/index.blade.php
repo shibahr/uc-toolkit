@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-sm-12">
 
-            <table id="itls-table" class="table table-striped table-bordered">
+            <table id="itls-table" class="table table-striped row-border">
                 <thead>
                 <tr>
                     <th>Phone Name</th>
@@ -26,10 +26,14 @@
                     <th>IP Address</th>
                     <th>Last Updated At</th>
                     <th>Result</th>
+                    <th>Fail Reason</th>
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($itls as $itl)
+                @if(!$itl->failure_reason)
+                    {{$itl->failure_reason == 'Passed'}}
+                @endif
                 <tr>
                     <td>{{ $itl->phone->mac }}</td>
                     <td>{{ $itl->phone->description}}</td>
@@ -38,6 +42,7 @@
                         {{ $itl->updated_at->toDayDateTimeString() }}
                     </td>
                     <td>{{ $itl->result }}</td>
+                    <td>{{ $itl->failure_reason}}</td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -58,9 +63,9 @@
     }
     // DataTable
     $(function() {
-            $("#itls-table").DataTable({
-                order: [[0, "desc"]]
-            });
+        $("#itls-table").DataTable({
+            order: [[3, "desc"]]
         });
+    });
 </script>
 @stop

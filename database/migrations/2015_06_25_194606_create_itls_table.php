@@ -18,6 +18,7 @@ class CreateItlsTable extends Migration
             $table->foreign('phone_id')->references('id')->on('phones');
             $table->string('ip_address');
             $table->string('result');
+            $table->string('failure_reason');
             $table->timestamps();
         });
     }

@@ -50,32 +50,55 @@ class EraseItl extends Job implements SelfHandling
         //Loop Devices and erase ITL
         foreach($risPortResults as $device)
         {
+            //Create the Phone model
             $phone = Phone::firstOrCreate([
                 'mac' => $this->macAddress,
                 'description' => $device['Description']
             ]);
 
+            //Start creating ITL
+            $itl = new Itl;
+            $itl->phone_id = $phone->id;
+            $itl->ip_address = $device['IpAddress'];
+
             if($device['IpAddress'] == "Unregistered/Unknown")
             {
-                Itl::create([
-                    'phone_id' => $phone->id,
-                    'ip_address' => $device['IpAddress'],
-                    'result' => 'Fail'
-                ]);
-
+                //Not registered, save as failed
+                $itl->result = 'Fail';
+                $itl->save();
                 Log::info('Device Unknown/Unregistered.', [$device]);
                 continue;
             }
 
-            $keys = setITLKeys('Cisco 7965');
+            /*
+             * This needs work
+             * Create device enum/model map
+             * or query CUCM again
+             */
+            $keys = setITLKeys('Cisco 7961');
             Log::info('setITLKeys(),$keys', [$keys]);
+
+            if(!$keys)
+            {
+                $itl->result = 'Fail';
+                $itl->failure_reason = 'Unsupported Model';
+                $itl->save();
+                return;
+            }
 
             // Temp workaround for AO NAT
 //            $device['IpAddress'] = "10.134.173.108";
 
             $dialer = new PhoneDialer($device['IpAddress']);
 
-            $dialer->dial($keys,$device['IpAddress']);
+            //Dial the keys
+            $status = $dialer->dial($keys,$device['IpAddress']);
+
+            //Check Pass/Fail and save ITL
+            $passFail = $status ? 'Success' : 'Fail';
+            $itl->result = $passFail;
+            $itl->save();
+
 
         }
     }
