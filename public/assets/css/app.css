@@ -13696,6 +13696,18 @@ input[type="search"] {
 .mac-description {
   color: #95a5a6;
 }
+.login-screen {
+  background-color: #34495e;
+}
+.login-header {
+  color: white;
+}
+.navbar {
+  border-radius: 0px;
+}
+th {
+  text-align: center;
+}
 /*!
  *  Font Awesome 4.3.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)

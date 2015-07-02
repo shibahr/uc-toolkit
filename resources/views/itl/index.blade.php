@@ -24,9 +24,9 @@
                     <th>Phone Name</th>
                     <th>Phone Description</th>
                     <th>IP Address</th>
-                    <th>Last Updated At</th>
                     <th>Result</th>
                     <th>Fail Reason</th>
+                    <th>Last Updated At</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,13 +38,13 @@
                     <td>{{ $itl->phone->mac }}</td>
                     <td>{{ $itl->phone->description}}</td>
                     <td>{{ $itl->ip_address}}</td>
-                    <td>
-                        {{ $itl->updated_at->toDayDateTimeString() }}
-                    </td>
                     <td >
                         <i class="{{ $itl->result == 'Success' ? 'fa fa-check' : 'fa fa-times' }}"></i>
                     </td>
                     <td>{{ $itl->failure_reason}}</td>
+                    <td>
+                        {{ $itl->updated_at->toDayDateTimeString() }}
+                    </td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -66,7 +66,7 @@
     // DataTable
     $(function() {
         $("#itls-table").DataTable({
-            order: [[3, "desc"]],
+            order: [[5, "desc"]],
             "aoColumnDefs": [
                 {
                     "aTargets": [ 0 ], // Column to target

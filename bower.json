@@ -1,20 +1,20 @@
 {
-    "name": "trust-list-eraser",
-    "description": "CUCM application to erase security certificates on IP Phones",
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "vendor/bower_components",
-        "test",
-        "tests"
-    ],
-    "dependencies": {
-        "jquery": "~2.1.4",
-        "bootstrap": "~3.3.4",
-        "fontawesome": "~4.3.0",
-        "datatables": "~1.10.7",
-        "datatables-plugins": "~1.10.7"
-
-    }
+  "name": "trust-list-eraser",
+  "description": "CUCM application to erase security certificates on IP Phones",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "vendor/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.4",
+    "fontawesome": "~4.3.0",
+    "datatables": "~1.10.7",
+    "datatables-plugins": "~1.10.7",
+    "flat-ui": "~2.2.2"
+  }
 }
