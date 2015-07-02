@@ -5,6 +5,10 @@ use Illuminate\Support\Facades\Artisan;
 use SoapClient;
 use SoapFault;
 
+/**
+ * Class AxlSoap
+ * @package App\Services
+ */
 class AxlSoap {
 
     /**
@@ -12,6 +16,12 @@ class AxlSoap {
      */
     protected $client;
 
+    /**
+     * @param $wsdlPath
+     * @param $location
+     * @param $user
+     * @param $pass
+     */
     public function __construct($wsdlPath,$location,$user,$pass)
     {
         $this->client = new SoapClient($wsdlPath,
@@ -108,6 +118,11 @@ class AxlSoap {
         }
     }
 
+    /**
+     * @param $appUserId
+     * @param $devices
+     * @return \Exception|SoapFault
+     */
     public function updateAppUser($appUserId,$devices)
     {
         try {
@@ -117,6 +132,19 @@ class AxlSoap {
                     'device' => $devices
                 ]
             ]);
+        } catch(SoapFault $E) {
+
+            dd($E);
+            return $E;
+        }
+    }
+
+    public function executeSQLQuery($sql)
+    {
+        try {
+            return $this->client->executeSQLQuery([
+                'sql' => $sql,
+                ]);
         } catch(SoapFault $E) {
 
             dd($E);

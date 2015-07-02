@@ -53,8 +53,17 @@ class PreparePhoneList {
 
         //Process RIS Port Results
         $risPortResults = processRisResults($SelectCmDeviceResult,$risArray);
-        Log::info('processRisResults(),$risPortResults,', [$risPortResults]);
 
+        //Fetch device model from type product
+        for($i=0; $i<count($risPortResults); $i++)
+        {
+            if($risPortResults[$i]['IsRegistered'])
+            {
+                $results = $this->axl->executeSQLQuery('SELECT name FROM typeproduct WHERE enum = "' . $risPortResults[$i]['Product'] . '"');
+                $risPortResults[$i]['Model'] = $results->return->row->name;
+            }
+        }
+        Log::info('processRisResults(),$risPortResults,', [$risPortResults]);
         return $risPortResults;
     }
 

@@ -100,7 +100,7 @@ function processRisResults($risResults,$phoneArray)
                 {
                     if (!isset($cmNode->CmDevices[0])) continue;
 
-                    list($deviceAndIp[$i]['IpAddress'],$deviceAndIp[$i]['Description'],$deviceAndIp[$i]['Product']) = searchForIp($cmNode->CmDevices,$deviceAndIp[$i]['DeviceName']);
+                    list($deviceAndIp[$i]['IpAddress'],$deviceAndIp[$i]['IsRegistered'],$deviceAndIp[$i]['Description'],$deviceAndIp[$i]['Product']) = searchForIp($cmNode->CmDevices,$deviceAndIp[$i]['DeviceName']);
 
                     if (filter_var($deviceAndIp[$i]['IpAddress'], FILTER_VALIDATE_IP)) break;
                 }
@@ -108,7 +108,9 @@ function processRisResults($risResults,$phoneArray)
             if (!isset($deviceAndIp[$i]['IpAddress']))
             {
                 $deviceAndIp[$i]['IpAddress'] = "Unregistered/Unknown";
+                $deviceAndIp[$i]['IsRegistered'] = false;
                 $deviceAndIp[$i]['Description'] = "Unavailable";
+                $deviceAndIp[$i]['Model'] = "Unavailable";
             }
             $i++;
         }
@@ -128,7 +130,7 @@ function searchForIp($array,$value)
     {
         if($device->Name == $value && $device->Status == "Registered")
         {
-            return [$device->IpAddress,$device->Description,$device->Product];
+            return [$device->IpAddress,true,$device->Description,$device->Product];
         }
     }
     return false;

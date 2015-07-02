@@ -75,7 +75,7 @@ class EraseItl extends Job implements SelfHandling
              * Create device enum/model map
              * or query CUCM again
              */
-            $keys = setITLKeys('Cisco 7961');
+            $keys = setITLKeys($device['Model']);
             Log::info('setITLKeys(),$keys', [$keys]);
 
             if(!$keys)
@@ -87,7 +87,7 @@ class EraseItl extends Job implements SelfHandling
             }
 
             // Temp workaround for AO NAT
-//            $device['IpAddress'] = "10.134.173.108";
+            $device['IpAddress'] = "10.134.173.108";
 
             $dialer = new PhoneDialer($device['IpAddress']);
 
