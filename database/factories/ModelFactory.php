@@ -14,24 +14,30 @@
 use Carbon\Carbon;
 
 $factory->define(App\User::class, function ($faker) {
+
+    $createdAt = $faker->dateTimeThisYear($max = 'now');
+    $updatedAt = $faker->dateTimeBetween($startDate = $createdAt, $endDate = 'now');
+
     return [
         'name' => $faker->name,
         'email' => $faker->email,
         'password' => bcrypt(str_random(10)),
         'remember_token' => str_random(10),
-        'created_at' => Carbon::now(),
-        'updated_at' => $faker->dateTimeThisMonth($max = 'now')
+        'created_at' => $createdAt,
+        'updated_at' => $updatedAt
     ];
 });
 
 $factory->define(App\Phone::class, function ($faker) {
 
+    $createdAt = $faker->dateTimeThisYear($max = 'now');
+    $updatedAt = $faker->dateTimeBetween($startDate = $createdAt, $endDate = 'now');
 
     return [
         'mac' => 'SEP' . strtoupper($faker->regexify('[0-9A-Fa-f]{12}')),
         'description' => $faker->realText($maxNbChars = 30, $indexSize = 2),
-        'created_at' => Carbon::now(),
-        'updated_at' => $faker->dateTimeThisMonth($max = 'now')
+        'created_at' => $createdAt,
+        'updated_at' => $updatedAt
     ];
 });
 
@@ -42,17 +48,37 @@ $factory->define(App\Itl::class, function ($faker) {
 
     if($passFail[0] == 'Fail')
     {
-        $failReason = $faker->text($maxNbChars = 10);
+        $failReasons = $faker->shuffle([
+            'Unregistered/Unknown',
+            'Authentication Exception',
+            'Connection Exception',
+            'Unknown Exception'
+        ]);
+
+        $failReason = $failReasons[0];
+
     } else {
+
         $failReason = '';
+
     }
+
+    if($failReason == 'Unregistered/Unknown')
+    {
+        $ipAddress = 'Unregistered/Unknown';
+    } else {
+        $ipAddress = $faker->localIpv4();
+    }
+
+    $createdAt = $faker->dateTimeThisYear($max = 'now');
+    $updatedAt = $faker->dateTimeBetween($startDate = $createdAt, $endDate = 'now');
 
     return [
         'phone_id' => $faker->numberBetween($min = 1, $max = 20),
-        'ip_address' => $faker->localIpv4(),
+        'ip_address' => $ipAddress,
         'result' => $passFail[0],
         'failure_reason' => $failReason,
-        'created_at' => Carbon::now(),
-        'updated_at' => $faker->dateTimeThisMonth($max = 'now')
+        'created_at' => $createdAt,
+        'updated_at' => $updatedAt
     ];
 });

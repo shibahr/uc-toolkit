@@ -4,17 +4,14 @@
 <div class="container-fluid">
     <div class="row page-title-row">
         <div class="col-md-12">
-            <h5>MAC</h5>
-            <h6>{{ $phone->mac }}</h6>
+            <h6 class="mac">{{ $phone->mac }}</h6>
         </div>
     </div>
-    <div class="row page-title-row">
+    <div class="row">
         <div class="col-md-12">
-            <h5>Description</h5>
-            <h6>{{ $phone->description }}</h6>
+            <small class="mac-description">{{ $phone->description }}</small>
         </div>
     </div>
-
     <div class="row">
         <div class="col-sm-12">
 
@@ -22,7 +19,7 @@
                 <thead>
                 <tr>
                     <th>IP Address</th>
-                    <th>ETL Type</th>
+                    <th>Type</th>
                     <th>Sent On</th>
                     <th>Result</th>
                     <th>Fail Reason</th>

@@ -30,10 +30,10 @@ elixir(function(mix) {
             'resources/assets/js/flat-ui.min.js'
         ).copy(
             'vendor/bower_components/flat-ui/dist/fonts/glyphicons',
-            'public/assets/glyphicons/fonts'
+            'public/assets/font/glyphicons'
         ).copy(
             'vendor/bower_components/flat-ui/dist/fonts/lato',
-            'public/assets/lato/fonts'
+            'public/assets/fonts/lato'
         );
 
     // Copy datatables

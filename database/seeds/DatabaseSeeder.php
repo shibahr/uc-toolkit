@@ -36,8 +36,8 @@ class DatabaseSeeder extends Seeder
         ]);
 
         factory(App\User::class, 19)->create();
-        factory(App\Phone::class, 20)->create();
-        factory(App\Itl::class, 20)->create();
+        factory(App\Phone::class, 100)->create();
+        factory(App\Itl::class, 100)->create();
 
 
         Model::reguard();
