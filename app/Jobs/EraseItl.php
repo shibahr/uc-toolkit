@@ -2,15 +2,12 @@
 
 namespace App\Jobs;
 
-use App\Jobs\Job;
+use App\Itl;
 use App\Phone;
-use App\Services\AxlSoap;
 use App\Services\PhoneDialer;
-use App\Services\RisSoap;
+use App\Services\PreparePhoneList;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use SoapClient;
 
 class EraseItl extends Job implements SelfHandling
 {
@@ -18,32 +15,14 @@ class EraseItl extends Job implements SelfHandling
      * Create a new job instance.
      *
      * @param $macAddress
-     * @param AxlSoap $axl
      * @return \App\Jobs\EraseItl
      */
 
-    private $phone;
+    private $macAddress;
 
     public function __construct($macAddress)
     {
-
-
         $this->macAddress = $macAddress;
-
-        $this->axl = new AxlSoap(
-            app_path() . '/CiscoAPI/axl/schema/8.5/AXLAPI.wsdl',
-            env('CUCM_AXL_LOCATION'),
-            env('CUCM_LOGIN'),
-            env('CUCM_PASS')
-        );
-
-        $this->sxml = new RisSoap(
-            app_path() . '/CiscoAPI/sxml/schema/RISAPI.wsdl',
-            env('CUCM_SXML_LOCATION'),
-            env('CUCM_LOGIN'),
-            env('CUCM_PASS')
-        );
-
     }
 
     /**
@@ -65,49 +44,34 @@ class EraseItl extends Job implements SelfHandling
 
         }
 
-        //Get App User
-        $appUserObj = $this->axl->getAppUser(env('CUCM_LOGIN'));
-        Log::info('getAppUser(),$appUserObj,', [$appUserObj]);
-
-        //Create Device Array
-        $appUserDeviceArray = createDeviceArray($appUserObj,$deviceArray);
-        Log::info('createDeviceArray(),$appUserDeviceArray,', [$appUserDeviceArray]);
-
-        //Associate Devices to App User
-        $res = $this->axl->updateAppUser(env('CUCM_LOGIN'),$appUserDeviceArray);
-        Log::info('updateAppUser(),$res,', [$res]);
-
-        //Create RIS Port Phone Array
-        $risArray = createRisPhoneArray($deviceArray);
-        Log::info('createRisPhoneArray(),$risArray,', [$risArray]);
-
-        //Get Device IP's from RIS Port
-        $SelectCmDeviceResult = $this->sxml->getDeviceIp($risArray);
-        Log::info('getDeviceIp(),$SelectCmDeviceResult,', [$SelectCmDeviceResult]);
-
-        //Process RIS Port Results
-        $risPortResults = processRisResults($SelectCmDeviceResult,$risArray);
-        Log::info('processRisResults(),$risPortResults,', [$risPortResults]);
+        $phoneList = new PreparePhoneList($deviceArray);
+        $risPortResults = $phoneList->createList();
 
         //Loop Devices and erase ITL
         foreach($risPortResults as $device)
         {
-            Phone::create([
+            $phone = Phone::firstOrCreate([
                 'mac' => $this->macAddress,
                 'description' => $device['Description']
             ]);
 
             if($device['IpAddress'] == "Unregistered/Unknown")
             {
+                Itl::create([
+                    'phone_id' => $phone->id,
+                    'ip_address' => $device['IpAddress'],
+                    'result' => 'Fail'
+                ]);
+
                 Log::info('Device Unknown/Unregistered.', [$device]);
                 continue;
             }
 
-            $keys = setITLKeys('Cisco 7975');
+            $keys = setITLKeys('Cisco 7965');
             Log::info('setITLKeys(),$keys', [$keys]);
 
             // Temp workaround for AO NAT
-            $device['IpAddress'] = "10.134.173.108";
+//            $device['IpAddress'] = "10.134.173.108";
 
             $dialer = new PhoneDialer($device['IpAddress']);
 

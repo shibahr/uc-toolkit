@@ -41,6 +41,7 @@ $factory->define(App\Itl::class, function ($faker) {
 
     return [
         'phone_id' => $faker->numberBetween($min = 1, $max = 20),
+        'ip_address' => $faker->localIpv4(),
         'result' => $passFail[0],
         'created_at' => Carbon::now(),
         'updated_at' => $faker->dateTimeThisMonth($max = 'now')

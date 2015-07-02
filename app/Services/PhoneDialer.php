@@ -76,7 +76,7 @@ class PhoneDialer {
                 }
 
             }
-            Log::info('dial(),null', [$response->getBody()]);
+            Log::info('dial(),response', [$response->getBody()]);
         }
         return true;
     }

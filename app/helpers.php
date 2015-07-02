@@ -108,6 +108,7 @@ function processRisResults($risResults,$phoneArray)
             if (!isset($deviceAndIp[$i]['IpAddress']))
             {
                 $deviceAndIp[$i]['IpAddress'] = "Unregistered/Unknown";
+                $deviceAndIp[$i]['Description'] = "Unavailable";
             }
             $i++;
         }

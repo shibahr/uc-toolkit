@@ -23,6 +23,7 @@
                 <tr>
                     <th>Phone Name</th>
                     <th>Phone Description</th>
+                    <th>IP Address</th>
                     <th>Last Updated At</th>
                     <th>Result</th>
                 </tr>
@@ -32,6 +33,7 @@
                 <tr>
                     <td>{{ $itl->phone->mac }}</td>
                     <td>{{ $itl->phone->description}}</td>
+                    <td>{{ $itl->ip_address}}</td>
                     <td data-order="{{ $itl->created_at->timestamp }}">
                         {{ $itl->updated_at->toDayDateTimeString() }}
                     </td>

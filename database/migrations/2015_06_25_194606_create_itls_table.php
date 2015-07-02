@@ -16,6 +16,7 @@ class CreateItlsTable extends Migration
             $table->increments('id');
             $table->integer('phone_id')->unsigned();
             $table->foreign('phone_id')->references('id')->on('phones');
+            $table->string('ip_address');
             $table->string('result');
             $table->timestamps();
         });
