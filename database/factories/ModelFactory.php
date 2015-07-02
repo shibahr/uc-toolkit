@@ -43,6 +43,8 @@ $factory->define(App\Itl::class, function ($faker) {
     if($passFail[0] == 'Fail')
     {
         $failReason = $faker->text($maxNbChars = 10);
+    } else {
+        $failReason = '';
     }
 
     return [

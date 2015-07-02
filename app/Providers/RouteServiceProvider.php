@@ -27,6 +27,10 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot($router);
+
+        $router->bind('phone', function($mac) {
+           return \App\Phone::where('mac', $mac)->first();
+        });
     }
 
     /**

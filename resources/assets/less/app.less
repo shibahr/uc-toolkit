@@ -1,5 +1,6 @@
 
 @import "bootstrap/bootstrap";
+@import "flat-ui/flat-ui";
 @import "//fonts.googleapis.com/css?family=Roboto:400,300";
 
 @btn-font-weight: 300;
@@ -9,5 +10,47 @@ body, label, .checkbox label {
   font-weight: 300;
 }
 
+ul.pagination {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  color: #fff;
+  word-spacing: -.5px;
+  background: #d6dbdf;
+  border-radius: 6px;
+}
+
+//Make table hyperlinks appear blue and underlined
+td a {
+  color: #2980B9;
+  text-decoration: underline;
+}
+//Add Margin at bottom of datatables
+#itls-table_wrapper {
+  margin-bottom: 50px;
+}
+
+//Add margin between Search text and box
+input[type="search"] {
+  margin-left: 10px;
+}
+
+//Pull search box right
+.dataTables_filter {
+  width: 50%;
+  float: right;
+  text-align: right;
+}
+
+//Successful checks should be green
+.fa-check {
+  color: green;
+}
+
+//Failed x's should be red
+.fa-times{
+  color: red;
+}
+
 @import "fontawesome/font-awesome";
-@import "dataTables";
+//@import "dataTables";

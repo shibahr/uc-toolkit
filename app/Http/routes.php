@@ -11,15 +11,19 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+//Main index
+Route::get('/', 'HomeController@index');
 
 // Home
-Route::get('home', 'HomeController@index');
+Route::get('home', function() {
+    return redirect('/');
+});
 
 // ITL
 Route::resource('itl', 'ItlController');
+
+//Phones
+Route::resource('phone', 'PhoneController');
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');

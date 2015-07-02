@@ -38,10 +38,12 @@
                     <td>{{ $itl->phone->mac }}</td>
                     <td>{{ $itl->phone->description}}</td>
                     <td>{{ $itl->ip_address}}</td>
-                    <td data-order="{{ $itl->created_at->timestamp }}">
+                    <td>
                         {{ $itl->updated_at->toDayDateTimeString() }}
                     </td>
-                    <td>{{ $itl->result }}</td>
+                    <td >
+                        <i class="{{ $itl->result == 'Success' ? 'fa fa-check' : 'fa fa-times' }}"></i>
+                    </td>
                     <td>{{ $itl->failure_reason}}</td>
                 </tr>
                 @endforeach
@@ -64,7 +66,17 @@
     // DataTable
     $(function() {
         $("#itls-table").DataTable({
-            order: [[3, "desc"]]
+            order: [[3, "desc"]],
+            "aoColumnDefs": [
+                {
+                    "aTargets": [ 0 ], // Column to target
+                    "mRender": function ( data, type, full ) {
+                        // 'full' is the row's data object, and 'data' is this column's data
+                        // e.g. 'full is the row object, and 'data' is the phone mac
+                        return '<a href="/phone/' + full[0] + '">' + data + '</a>';
+                    }
+                }
+            ]
         });
     });
 </script>

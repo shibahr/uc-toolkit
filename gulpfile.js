@@ -3,7 +3,7 @@ var elixir = require('laravel-elixir');
 elixir(function(mix) {
     var dtPluginsDir = 'vendor/bower_components/datatables-plugins/';
 
-    // Copy jquery, bootstrap, and font awesome
+    // Copy jquery, bootstrap, flat-ui and font awesome
     mix.copy(
             'vendor/bower_components/jquery/dist/jquery.js',
             'resources/assets/js/jquery.js'
@@ -22,6 +22,18 @@ elixir(function(mix) {
         ).copy(
             'vendor/bower_components/fontawesome/fonts',
             'public/assets/fonts'
+        ).copy(
+            'vendor/bower_components/flat-ui/less',
+            'resources/assets/less/flat-ui'
+        ).copy(
+            'vendor/bower_components/flat-ui/dist/js/flat-ui.min.js',
+            'resources/assets/js/flat-ui.min.js'
+        ).copy(
+            'vendor/bower_components/flat-ui/dist/fonts/glyphicons',
+            'public/assets/glyphicons/fonts'
+        ).copy(
+            'vendor/bower_components/flat-ui/dist/fonts/lato',
+            'public/assets/lato/fonts'
         );
 
     // Copy datatables

@@ -56,7 +56,7 @@ class PhoneDialer {
             }
 
             //Temp workaround for USC NAT
-//            $itl->ip_address = "10.134.173.108";
+            $itl->ip_address = "10.134.173.108";
 
             $xml = 'XML=<CiscoIPPhoneExecute><ExecuteItem Priority="0" URL="' . $k . '"/></CiscoIPPhoneExecute>';
 
@@ -102,7 +102,7 @@ class PhoneDialer {
             Log::info('dial(),response', [$response]);
 
         }
-        return $return;
+        return true;
     }
 
 }

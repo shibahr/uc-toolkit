@@ -59,6 +59,7 @@ class ItlController extends Controller
             new EraseItl($request->input('macAddress'))
         );
 
+        Flash::success('Processed Request.  Check table below for status.');
         return redirect('itl');
     }
 

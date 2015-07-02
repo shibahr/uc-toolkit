@@ -1,4 +1,5 @@
-<nav class="navbar navbar-default">
+<!--<nav class="navbar navbar-default">-->
+<nav class="navbar navbar-inverse navbar-embossed">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
@@ -7,7 +8,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">Laravel</a>
+            <a class="navbar-brand" href="#">TLE</a>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -15,7 +16,7 @@
                 <li><a href="{{ url('/') }}">Home</a></li>
                 @if (!Auth::guest())
                 <li><a href="{{ url('/itl') }}">ITL</a></li>
-                <li><a href="{{ url('/ctl') }}">CTL</a></li>
+<!--                <li><a href="{{ url('/ctl') }}">CTL</a></li>-->
                 @endif
             </ul>
 

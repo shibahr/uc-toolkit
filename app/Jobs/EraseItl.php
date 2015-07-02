@@ -65,8 +65,9 @@ class EraseItl extends Job implements SelfHandling
             {
                 //Not registered, save as failed
                 $itl->result = 'Fail';
+                $itl->failure_reason = 'Unregistered/Unknown';
                 $itl->save();
-                Log::info('Device Unknown/Unregistered.', [$device]);
+                Log::info('Device Unregistered/Unknown.', [$device]);
                 continue;
             }
 
