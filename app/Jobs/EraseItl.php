@@ -71,9 +71,7 @@ class EraseItl extends Job implements SelfHandling
             }
 
             /*
-             * This needs work
-             * Create device enum/model map
-             * or query CUCM again
+             * Get the key press series
              */
             $keys = setITLKeys($device['Model']);
             Log::info('setITLKeys(),$keys', [$keys]);
@@ -86,13 +84,11 @@ class EraseItl extends Job implements SelfHandling
                 return;
             }
 
-            // Temp workaround for AO NAT
-            $device['IpAddress'] = "10.134.173.108";
 
             $dialer = new PhoneDialer($device['IpAddress']);
 
             //Dial the keys
-            $status = $dialer->dial($keys,$device['IpAddress']);
+            $status = $dialer->dial($itl,$keys);
 
             //Check Pass/Fail and save ITL
             $passFail = $status ? 'Success' : 'Fail';

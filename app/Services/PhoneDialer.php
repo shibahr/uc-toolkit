@@ -9,6 +9,7 @@
 namespace App\Services;
 
 
+use App\Itl;
 use GuzzleHttp\Client;
 use Sabre\Xml\Reader;
 use GuzzleHttp\Exception\ConnectException;
@@ -39,12 +40,12 @@ class PhoneDialer {
                     env('CUCM_LOGIN'), env('CUCM_PASS')
                 ],
         ]);
+
+        $this->reader = new Reader;
     }
 
-    public function dial($keys,$p)
+    public function dial(ITL $itl,$keys)
     {
-        $reader = new Reader;
-        $return = true;
 
         foreach ($keys as $k)
         {
@@ -54,39 +55,48 @@ class PhoneDialer {
                 continue;
             }
 
+            //Temp workaround for USC NAT
+//            $itl->ip_address = "10.134.173.108";
+
             $xml = 'XML=<CiscoIPPhoneExecute><ExecuteItem Priority="0" URL="' . $k . '"/></CiscoIPPhoneExecute>';
 
             try {
 
-                $response = $this->client->post('http://' . $p . '/CGI/Execute',['body' => $xml]);
+                $response = $this->client->post('http://' . $itl->ip_address . '/CGI/Execute',['body' => $xml]);
 
             } catch (RequestException $e) {
 
                 if($e instanceof ClientException)
                 {
                     //Unauthorized
-                    dd('Client Exception');
+                    Log::error('Authentication Exception', [$e]);
+                    $itl->failure_reason = "Authentication Exception";
+                    $itl->save();
                 }
                 elseif($e instanceof ConnectException)
                 {
                     //Can't Connect
                     Log::error('Connection Exception', [$e]);
-                    dd('Connection Exception');
+                    $itl->failure_reason = "Connection Exception";
+                    $itl->save();
                 }
                 else
                 {
                     //Other exception
-                    dd('Request Exception');
+                    Log::error('Unknown Error', [$e]);
+                    $itl->failure_reason = "Unknown Exception";
+                    $itl->save();
                 }
 
+                return false;
             }
 
             /*
              * Check our response code and flip
              * $return to false if non zero
              */
-            $reader->xml($response->getBody()->getContents());
-            $response = $reader->parse();
+            $this->reader->xml($response->getBody()->getContents());
+            $response = $this->reader->parse();
             if(! $response['value'][0]['attributes']['Status'] == 0) $return = false;
 
             Log::info('dial(),response', [$response]);
