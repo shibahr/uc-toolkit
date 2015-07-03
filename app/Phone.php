@@ -13,8 +13,8 @@ class Phone extends Model
      */
     protected $fillable = ['mac', 'description'];
 
-    public function Itl()
+    public function Eraser()
     {
-        return $this->hasMany('App\Itl');
+        return $this->hasMany('App\Eraser');
     }
 }

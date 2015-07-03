@@ -9,7 +9,11 @@ use App\Services\PreparePhoneList;
 use Illuminate\Contracts\Bus\SelfHandling;
 use Illuminate\Support\Facades\Log;
 
-class EraseItl extends Job implements SelfHandling
+/**
+ * Class EraseItl
+ * @package App\Jobs
+ */
+class EraseTrustList extends Job implements SelfHandling
 {
     /**
      * Create a new job instance.
@@ -19,10 +23,16 @@ class EraseItl extends Job implements SelfHandling
      */
 
     private $macAddress;
+    private $tleType;
 
-    public function __construct($macAddress)
+    /**
+     * @param $macAddress
+     * @param $tleType
+     */
+    public function __construct($macAddress,$tleType)
     {
         $this->macAddress = $macAddress;
+        $this->tleType = strtolower($tleType);
     }
 
     /**
@@ -47,7 +57,7 @@ class EraseItl extends Job implements SelfHandling
         $phoneList = new PreparePhoneList($deviceArray);
         $risPortResults = $phoneList->createList();
 
-        //Loop Devices and erase ITL
+        //Loop Devices and erase Trust List
         foreach($risPortResults as $device)
         {
             //Create the Phone model
@@ -56,17 +66,32 @@ class EraseItl extends Job implements SelfHandling
                 'description' => $device['Description']
             ]);
 
-            //Start creating ITL
-            $itl = new Itl;
-            $itl->phone_id = $phone->id;
-            $itl->ip_address = $device['IpAddress'];
+            switch($this->tleType)
+            {
+                case 'itl':
+
+                    //Start creating ITL
+                    $tleObj = new Itl;
+                    $tleObj->phone_id = $phone->id;
+                    $tleObj->ip_address = $device['IpAddress'];
+                    break;
+
+                case 'ctl':
+
+                    //Start creating ITL
+                    $tleObj = new Ctl;
+                    $tleObj->phone_id = $phone->id;
+                    $tleObj->ip_address = $device['IpAddress'];
+                    break;
+
+            }
 
             if($device['IpAddress'] == "Unregistered/Unknown")
             {
                 //Not registered, save as failed
-                $itl->result = 'Fail';
-                $itl->failure_reason = 'Unregistered/Unknown';
-                $itl->save();
+                $tleObj->result = 'Fail';
+                $tleObj->failure_reason = 'Unregistered/Unknown';
+                $tleObj->save();
                 Log::info('Device Unregistered/Unknown.', [$device]);
                 continue;
             }
@@ -74,14 +99,14 @@ class EraseItl extends Job implements SelfHandling
             /*
              * Get the key press series
              */
-            $keys = setITLKeys($device['Model']);
+            $keys = setKeys($device['Model'],$this->tleType);
             Log::info('setITLKeys(),$keys', [$keys]);
 
             if(!$keys)
             {
-                $itl->result = 'Fail';
-                $itl->failure_reason = 'Unsupported Model';
-                $itl->save();
+                $tleObj->result = 'Fail';
+                $tleObj->failure_reason = 'Unsupported Model';
+                $tleObj->save();
                 return;
             }
 
@@ -89,12 +114,12 @@ class EraseItl extends Job implements SelfHandling
             $dialer = new PhoneDialer($device['IpAddress']);
 
             //Dial the keys
-            $status = $dialer->dial($itl,$keys);
+            $status = $dialer->dial($tleObj,$keys);
 
             //Check Pass/Fail and save ITL
             $passFail = $status ? 'Success' : 'Fail';
-            $itl->result = $passFail;
-            $itl->save();
+            $tleObj->result = $passFail;
+            $tleObj->save();
 
 
         }

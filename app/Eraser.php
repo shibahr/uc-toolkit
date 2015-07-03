@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Itl extends Model
+class Eraser extends Model
 {
     /**
      * The attributes that are mass assignable.

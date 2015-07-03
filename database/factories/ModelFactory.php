@@ -41,8 +41,9 @@ $factory->define(App\Phone::class, function ($faker) {
     ];
 });
 
-$factory->define(App\Itl::class, function ($faker) {
+$factory->define(App\Eraser::class, function ($faker) {
 
+    $eraserType = $faker->shuffle(['itl','ctl']);
     $passFail = $faker->shuffle(['Success','Fail']);
     $failReason = false;
 
@@ -76,6 +77,7 @@ $factory->define(App\Itl::class, function ($faker) {
     return [
         'phone_id' => $faker->numberBetween($min = 1, $max = 20),
         'ip_address' => $ipAddress,
+        'eraser_type' => $eraserType[0],
         'result' => $passFail[0],
         'failure_reason' => $failReason,
         'created_at' => $createdAt,

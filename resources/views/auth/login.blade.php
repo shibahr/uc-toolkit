@@ -31,7 +31,7 @@
             </div>
             <div class="form-group">
                 <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-envelope-o fa-fw"></i></span>
+                    <span class="input-group-addon"><i class="fa fa fa-lock fa-fw"></i></span>
                     <input class="form-control" type="password" placeholder="Password" name="password">
                 </div>
             </div>

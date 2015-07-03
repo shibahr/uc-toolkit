@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateItlsTable extends Migration
+class CreateErasersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,12 @@ class CreateItlsTable extends Migration
      */
     public function up()
     {
-        Schema::create('itls', function (Blueprint $table) {
+        Schema::create('erasers', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('phone_id')->unsigned();
             $table->foreign('phone_id')->references('id')->on('phones');
             $table->string('ip_address');
+            $table->string('eraser_type');
             $table->string('result');
             $table->string('failure_reason');
             $table->timestamps();
@@ -30,6 +31,6 @@ class CreateItlsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('itls');
+        Schema::drop('erasers');
     }
 }

@@ -20,21 +20,21 @@
                 <tr>
                     <th>IP Address</th>
                     <th>Type</th>
-                    <th>Sent On</th>
                     <th>Result</th>
                     <th>Fail Reason</th>
+                    <th>Sent On</th>
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($phone->itl as $itl)
+                @foreach ($phone->eraser as $attempt)
                 <tr>
-                    <td>{{ $itl->ip_address }}</td>
-                    <td>ITL</td>
-                    <td>{{ $itl->created_at->toDayDateTimeString()}}</td>
+                    <td>{{ $attempt->ip_address }}</td>
+                    <td>{{ strtoupper($attempt->eraser_type) }}</td>
                     <td >
-                        <i class="{{ $itl->result == 'Success' ? 'fa fa-check' : 'fa fa-times' }}"></i>
+                        <i class="{{ $attempt->result == 'Success' ? 'fa fa-check' : 'fa fa-times' }}"></i>
                     </td>
-                    <td>{{ $itl->failure_reason}}</td>
+                    <td>{{ $attempt->failure_reason}}</td>
+                    <td>{{ $attempt->created_at->toDayDateTimeString()}}</td>
                 </tr>
                 @endforeach
                 </tbody>

@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      * @var array
      */
     protected $tables = [
-        'users', 'phones', 'itls'
+        'users', 'phones', 'erasers'
     ];
 
     /**
@@ -37,7 +37,7 @@ class DatabaseSeeder extends Seeder
 
         factory(App\User::class, 19)->create();
         factory(App\Phone::class, 100)->create();
-        factory(App\Itl::class, 100)->create();
+        factory(App\Eraser::class, 100)->create();
 
 
         Model::reguard();

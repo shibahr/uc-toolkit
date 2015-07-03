@@ -16,7 +16,7 @@
                 <li><a href="{{ url('/') }}">Home</a></li>
                 @if (!Auth::guest())
                 <li><a href="{{ url('/itl') }}">ITL</a></li>
-<!--                <li><a href="{{ url('/ctl') }}">CTL</a></li>-->
+                <li><a href="{{ url('/ctl') }}">CTL</a></li>
                 @endif
             </ul>
 

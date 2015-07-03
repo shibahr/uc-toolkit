@@ -20,7 +20,12 @@ Route::get('home', function() {
 });
 
 // ITL
-Route::resource('itl', 'ItlController');
+Route::get('itl', 'EraserController@itlIndex');
+Route::post('itl','EraserController@itlStore');
+
+// CTL
+Route::get('ctl', 'EraserController@ctlIndex');
+Route::post('ctl','EraserController@ctlStore');
 
 //Phones
 Route::resource('phone', 'PhoneController');
