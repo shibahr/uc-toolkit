@@ -59,7 +59,7 @@
 
 @section('scripts')
 <script>
-    // Confirm file delete
+
     function erase_ctl() {
       $("#modal-erase-ctl").modal("show");
     }

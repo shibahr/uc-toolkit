@@ -147,10 +147,10 @@ function setKeys($model,$tleType)
 
         case 'itl':
 
-            switch ($model){
+            switch ($model) {
 
                 case "Cisco 7911": // This sequence for a 7911 actually deletes the ITL.  It's here for testing
-                    return  [
+                    return [
 
                         'Init:Applications',
                         'Key:Applications',
@@ -175,7 +175,7 @@ function setKeys($model,$tleType)
                 case "Cisco 7945": //Fall Through
                 case "Cisco 7961": //Fall Through
                 case "Cisco 7965":
-                    return  [
+                    return [
 
                         'Init:Settings',
                         'Key:Settings',
@@ -193,7 +193,7 @@ function setKeys($model,$tleType)
                     ];
                     break;
                 case "Cisco 7975":
-                    return  [
+                    return [
 
                         'Init:Settings',
                         'Key:Settings',
@@ -235,9 +235,87 @@ function setKeys($model,$tleType)
                     return false;
             }
             break;
+
         case 'ctl':
 
+            switch ($model) {
+                case "Cisco 7911": // This sequence for a 7911 actually deletes the ITL.  It's here for testing and should be updated....
+                    return [
+                        'Init:Applications',
+                        'Key:Applications',
+                        'Key:KeyPad3',
+                        'Key:KeyPad4',
+                        'Key:KeyPad5',
+                        'Key:KeyPad2',
+                        'Key:Soft4',
+                        'Key:Soft2',
+                        'Key:Sleep',
+                        'Key:KeyPadStar',
+                        'Key:KeyPadStar',
+                        'Key:KeyPadPound',
+                        'Key:Sleep',
+                        'Key:Soft4',
+                        'Key:Soft2',
+                        'Init:Applications',
+                    ];
+                    break;
+                case "Cisco 7945": //Fall Through
+                case "Cisco 7965":
+                    return [
+                        'Init:Settings',
+                        'Key:Settings',
+                        'Key:KeyPad4',
+                        'Key:KeyPad5',
+                        'Key:KeyPad1',
+                        'Key:Soft4',
+                        'Key:Sleep',
+                        'Key:KeyPadStar',
+                        'Key:KeyPadStar',
+                        'Key:KeyPadPound',
+                        'Key:Sleep',
+                        'Key:Soft4',
+                        'Init:Services'
+                    ];
+                    break;
+                case "Cisco 7975":
+                    return [
+                        'Init:Settings',
+                        'Key:Settings',
+                        'Key:KeyPad4',
+                        'Key:KeyPad5',
+                        'Key:KeyPad1',
+                        'Key:Soft5',
+                        'Key:Sleep',
+                        'Key:KeyPadStar',
+                        'Key:KeyPadStar',
+                        'Key:KeyPadPound',
+                        'Key:Sleep',
+                        'Key:Soft5',
+                        'Init:Services'
+                    ];
+                    break;
+                case "Cisco 8961": //Fall through
+                case "Cisco 9951": //Fall through
+                case "Cisco 7937": //Fall through
+                case "Cisco 9971":
+                    return [
+                        'Key:NavBack',
+                        'Key:NavBack',
+                        'Key:NavBack',
+                        'Key:NavBack',
+                        'Key:NavBack',
+                        'Key:Applications',
+                        'Key:KeyPad4',
+                        'Key:KeyPad4',
+                        'Key:KeyPad4',
+                        'Key:Soft3',
+                    ];
+                    break;
+                default:
+                    Log::error("CTL-> No model found for " . $model);
+                    return false;
+            }
+            break;
+
     }
-
-
 }

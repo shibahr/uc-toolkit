@@ -1,8 +1,8 @@
 {{-- Create Folder Modal --}}
-<div class="modal fade" id="modal-erase-itl">
+<div class="modal fade" id="modal-erase-ctl">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form method="POST" action="/itl"
+      <form method="POST" action="/ctl"
             class="form-horizontal">
         <input type="hidden" name="_token" value="{{ csrf_token() }}">
         <input type="hidden" name="folder" value="">
