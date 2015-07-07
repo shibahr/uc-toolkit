@@ -9,7 +9,7 @@
 namespace App\Services;
 
 
-use App\Itl;
+use App\Eraser;
 use GuzzleHttp\Client;
 use Sabre\Xml\Reader;
 use GuzzleHttp\Exception\ConnectException;
@@ -44,7 +44,7 @@ class PhoneDialer {
         $this->reader = new Reader;
     }
 
-    public function dial(ITL $itl,$keys)
+    public function dial(Eraser $itl,$keys)
     {
 
         foreach ($keys as $k)

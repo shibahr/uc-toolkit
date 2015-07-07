@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Itl;
+use App\Eraser;
 use App\Phone;
 use App\Services\PhoneDialer;
 use App\Services\PreparePhoneList;
@@ -66,25 +66,11 @@ class EraseTrustList extends Job implements SelfHandling
                 'description' => $device['Description']
             ]);
 
-            switch($this->tleType)
-            {
-                case 'itl':
-
-                    //Start creating ITL
-                    $tleObj = new Itl;
-                    $tleObj->phone_id = $phone->id;
-                    $tleObj->ip_address = $device['IpAddress'];
-                    break;
-
-                case 'ctl':
-
-                    //Start creating ITL
-                    $tleObj = new Ctl;
-                    $tleObj->phone_id = $phone->id;
-                    $tleObj->ip_address = $device['IpAddress'];
-                    break;
-
-            }
+            //Start creating Eraser
+            $tleObj = new Eraser;
+            $tleObj->phone_id = $phone->id;
+            $tleObj->ip_address = $device['IpAddress'];
+            $tleObj->eraser_type = $this->tleType;
 
             if($device['IpAddress'] == "Unregistered/Unknown")
             {
@@ -99,8 +85,8 @@ class EraseTrustList extends Job implements SelfHandling
             /*
              * Get the key press series
              */
-            $keys = setKeys($device['Model'],$this->tleType);
-            Log::info('setITLKeys(),$keys', [$keys]);
+            $keys = setKeys($device['Model'],$tleObj->eraser_type);
+            Log::info('setEraserKeys(),$keys', [$keys]);
 
             if(!$keys)
             {

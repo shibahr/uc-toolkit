@@ -41,7 +41,7 @@ class EraserController extends Controller
      *
      * @return Response
      */
-    public function storeItl(Request $request)
+    public function itlStore(Request $request)
     {
         Log::info('Received ITL Erase request for: '.$request->input('macAddress'));
 
