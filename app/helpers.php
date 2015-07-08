@@ -176,6 +176,7 @@ function setKeys($model,$tleType)
                 case "Cisco 7941":
                 case "Cisco 7945":
                 case "Cisco 7961":
+                case "Cisco 7962":
                 case "Cisco 7965":
                     return [
 
