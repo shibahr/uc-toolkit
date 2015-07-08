@@ -149,7 +149,8 @@ function setKeys($model,$tleType)
 
             switch ($model) {
 
-                case "Cisco 7911": // This sequence for a 7911 actually deletes the ITL.  It's here for testing
+                case "Cisco 7905":
+                case "Cisco 7911":
                     return [
 
                         'Init:Applications',
@@ -172,8 +173,9 @@ function setKeys($model,$tleType)
                     ];
                     break;
 
-                case "Cisco 7945": //Fall Through
-                case "Cisco 7961": //Fall Through
+                case "Cisco 7941":
+                case "Cisco 7945":
+                case "Cisco 7961":
                 case "Cisco 7965":
                     return [
 
@@ -192,6 +194,7 @@ function setKeys($model,$tleType)
                         'Init:Services'
                     ];
                     break;
+                case "Cisco 7971":
                 case "Cisco 7975":
                     return [
 
@@ -211,9 +214,9 @@ function setKeys($model,$tleType)
                     ];
                     break;
 
-                case "Cisco 8961": //Fall through
-                case "Cisco 9951": //Fall through
-                case "Cisco 7937": //Fall through
+                case "Cisco 8961":
+                case "Cisco 9951":
+                case "Cisco 7937":
                 case "Cisco 9971":
                     return [
 
@@ -239,6 +242,7 @@ function setKeys($model,$tleType)
         case 'ctl':
 
             switch ($model) {
+                case "Cisco 7905": // This sequence for a 7905 actually deletes the ITL.  It's here for testing and should be updated....
                 case "Cisco 7911": // This sequence for a 7911 actually deletes the ITL.  It's here for testing and should be updated....
                     return [
                         'Init:Applications',
@@ -259,7 +263,9 @@ function setKeys($model,$tleType)
                         'Init:Applications',
                     ];
                     break;
-                case "Cisco 7945": //Fall Through
+                case "Cisco 7941":
+                case "Cisco 7945":
+                case "Cisco 7961":
                 case "Cisco 7965":
                     return [
                         'Init:Settings',
@@ -277,6 +283,7 @@ function setKeys($model,$tleType)
                         'Init:Services'
                     ];
                     break;
+                case "Cisco 7971":
                 case "Cisco 7975":
                     return [
                         'Init:Settings',
@@ -294,9 +301,9 @@ function setKeys($model,$tleType)
                         'Init:Services'
                     ];
                     break;
-                case "Cisco 8961": //Fall through
-                case "Cisco 9951": //Fall through
-                case "Cisco 7937": //Fall through
+                case "Cisco 8961":
+                case "Cisco 9951":
+                case "Cisco 7937":
                 case "Cisco 9971":
                     return [
                         'Key:NavBack',
