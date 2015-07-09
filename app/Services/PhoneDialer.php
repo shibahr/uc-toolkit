@@ -56,7 +56,7 @@ class PhoneDialer {
             }
 
             //Temp workaround for USC NAT
-//            $itl->ip_address = "10.134.173.108";
+            $itl->ip_address = "10.134.173.108";
 
             $xml = 'XML=<CiscoIPPhoneExecute><ExecuteItem Priority="0" URL="' . $k . '"/></CiscoIPPhoneExecute>';
 
@@ -97,9 +97,33 @@ class PhoneDialer {
              */
             $this->reader->xml($response->getBody()->getContents());
             $response = $this->reader->parse();
-            if(! $response['value'][0]['attributes']['Status'] == 0) $return = false;
 
-            Log::info('dial(),response', [$response]);
+            if(isset($response['CiscoIPPhoneResponse']))
+            {
+                Log::info('dial(),response', [$response]);
+
+            } elseif(isset($response['name']) &&  $response['name'] == 'CiscoIPPhoneError')
+            {
+                //Log an Auth error if status is 4
+                switch($response['attributes']['Number'])
+                {
+                    case 4:
+                        $errorType = 'Authentication Exception';
+                        break;
+                    case 6:
+                        $errorType = 'Invalid URL Exception';
+                        break;
+                    default:
+                        $errorType = 'Unknown Exception';
+                        break;
+                }
+
+                Log::error($errorType, [$response]);
+                $itl->failure_reason = $errorType;
+                $itl->result = "Fail";
+                $itl->save();
+                return false;
+            }
 
         }
         return true;

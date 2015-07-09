@@ -102,12 +102,12 @@ class EraseTrustList extends Job implements SelfHandling
             //Dial the keys
             $status = $dialer->dial($tleObj,$keys);
 
-            //Check Pass/Fail and save ITL
+            //Successful if returned true
             $passFail = $status ? 'Success' : 'Fail';
             $tleObj->result = $passFail;
             $tleObj->save();
 
-
+            return;
         }
     }
 }
