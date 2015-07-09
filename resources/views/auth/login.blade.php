@@ -1,4 +1,4 @@
-@extends('auth.layout.main')
+@extends('app')
 
 @section('content')
     @if (count($errors) > 0)

@@ -15,9 +15,11 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 </head>
-<body>
+<body class="{{ Auth::user() ?: 'login-screen' }}" >
 
+@if(Auth::user())
 	@include('layout.nav')
+@endif
 
     <div class="col-md-10 col-md-offset-1">
         @include('layout.flash')
