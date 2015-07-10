@@ -37,13 +37,13 @@ class DatabaseSeeder extends Seeder
 
         factory(App\User::class, 19)->create();
         factory(App\Phone::class, 100)->create();
+        factory(App\Bulk::class, 100)->create();
         factory(App\Eraser::class, 100)
             ->create()
             ->each(function($e) {
-                $e->bulks()->attach(factory('App\Bulk')->create());
+                $bulk = App\Bulk::find(rand(1,100));
+                $e->bulks()->attach($bulk);
             });
-//        factory(App\Bulk::class, 100)->create();
-
 
         Model::reguard();
     }
