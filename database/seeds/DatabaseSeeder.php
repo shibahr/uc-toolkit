@@ -11,7 +11,7 @@ class DatabaseSeeder extends Seeder
      * @var array
      */
     protected $tables = [
-        'users', 'phones', 'erasers'
+        'users', 'phones', 'erasers', 'bulks', 'bulk_eraser'
     ];
 
     /**

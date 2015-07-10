@@ -94,7 +94,9 @@ $factory->define(App\Bulk::class, function ($faker) {
     {
         $mimeType = 'text/csv';
         $result = 'Processed';
-        $processId = $fileName . Carbon::now()->timestamp;
+//        $processId = $fileName . '-' . Carbon::now()->timestamp;
+        $processId = $fileName . '-' . $faker->unixTime($max = 'now');
+
     } else {
         $mimeType = $faker->mimeType;
         $result = 'Invalid File Type';

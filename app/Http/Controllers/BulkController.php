@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Bulk;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -25,6 +26,11 @@ class BulkController extends Controller
     public function index()
     {
         return view('bulk.index');
+    }
+
+    public function create()
+    {
+        return view('bulk.create');
     }
 
     public function store(Request $request)

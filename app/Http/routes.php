@@ -28,8 +28,9 @@ Route::get('ctl', 'EraserController@ctlIndex');
 Route::post('ctl','EraserController@ctlStore');
 
 //Bulk
-Route::get('bulk', 'BulkController@index');
-Route::post('bulk', 'BulkController@store');
+Route::resource('bulk','BulkController',
+    ['only' => ['index', 'create','store']]
+);
 
 //Phones
 Route::resource('phone', 'PhoneController');
