@@ -22,7 +22,9 @@
                 <tr>
                     <th>Filename</th>
                     <th>Process ID</th>
+                    <th>Phones Processed</th>
                     <th>Result</th>
+                    <th>Submitted</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -30,7 +32,9 @@
                 <tr>
                     <td>{{ $bulk->file_name }}</td>
                     <td>{{ $bulk->process_id }}</td>
+                    <td>{{ $bulk->erasers()->count() }}</td>
                     <td>{{ $bulk->result }}</td>
+                    <td>{{ $bulk->created_at->toDayDateTimeString() }}</td>
                 </tr>
                 @endforeach
                 </tbody>
@@ -46,7 +50,17 @@
     // DataTable
     $(function() {
         $("#bulks-table").DataTable({
-            order: [[0, "desc"]]
+            order: [[0, "desc"]],
+            "aoColumnDefs": [
+                {
+                    "aTargets": [ 0 ], // Column to target
+                    "mRender": function ( data, type, full ) {
+                        // 'full' is the row's data object, and 'data' is this column's data
+                        // e.g. 'full is the row object, and 'data' is the phone mac
+                        return '<a href="/bulk/' + full[0] + '">' + data + '</a>';
+                    }
+                }
+            ]
         });
     });
 </script>

@@ -29,7 +29,7 @@ Route::post('ctl','EraserController@ctlStore');
 
 //Bulk
 Route::resource('bulk','BulkController',
-    ['only' => ['index', 'create','store']]
+    ['except' => ['destroy','edit']]
 );
 
 //Phones

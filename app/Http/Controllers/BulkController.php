@@ -64,4 +64,15 @@ class BulkController extends Controller
         return redirect()->back();
 
     }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function show(Bulk $bulk)
+    {
+        return view('bulk.show', compact('bulk'));
+    }
 }
