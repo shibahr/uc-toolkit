@@ -28,6 +28,9 @@
 
 	<!-- Scripts -->
     <script src="{{ asset('/assets/js/app.js') }}"></script>
+    <script>
+        $('div.alert').not('.alert-danger').delay(5000).slideUp(300)
+    </script>
 
     @yield('scripts')
 </body>

@@ -25,7 +25,9 @@ class BulkController extends Controller
 
     public function index()
     {
-        return view('bulk.index');
+        $bulks = Bulk::all();
+
+        return view('bulk.index', compact('bulks'));
     }
 
     public function create()
@@ -43,7 +45,8 @@ class BulkController extends Controller
 
         $bulk->file_name = $fileName;
 
-        if (!$file->getClientMimeType() == "text/csv" || !$file->getClientOriginalExtension() == "csv")
+
+        if ($file->getClientMimeType() != "text/csv" && $file->getClientOriginalExtension() != "csv")
         {
             $bulk->result = "Invalid File Type";
             $bulk->mime_type = $file->getClientMimeType();
