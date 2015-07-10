@@ -37,15 +37,20 @@ class DatabaseSeeder extends Seeder
 
         factory(App\User::class, 19)->create();
         factory(App\Phone::class, 100)->create();
-        factory(App\Eraser::class, 100)->create();
+        factory(App\Eraser::class, 100)
+            ->create()
+            ->each(function($e) {
+                $e->bulks()->attach(factory('App\Bulk')->create());
+            });
+//        factory(App\Bulk::class, 100)->create();
 
 
         Model::reguard();
     }
 
-     /**
-      * Clean out the database for a new seed generation
-      */
+    /**
+     * Clean out the database for a new seed generation
+     */
     private function cleanDatabase()
     {
 

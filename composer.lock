@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4f4368dde1fed4af1e575f437571e8dc",
+    "hash": "10598376fb3d6a79ea69a5451b9576f9",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -2185,7 +2185,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bestmomo/scafold/zipball/6f7c58e079b5d18478d0e07129132722666229c1",
+                "url": "https://api.github.com/repos/bestmomo/scafold/zipball/0e6f6e67ad1f8420eaca416efc60253ee937141a",
                 "reference": "6f7c58e079b5d18478d0e07129132722666229c1",
                 "shasum": ""
             },
@@ -2367,6 +2367,50 @@
                 "test"
             ],
             "time": "2015-05-11 14:41:42"
+        },
+        {
+            "name": "laracasts/generators",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laracasts/Laravel-5-Generators-Extended.git",
+                "reference": "bf6d6ef779f397f6b1c0f133bbb8ebb6a55636e0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laracasts/Laravel-5-Generators-Extended/zipball/bf6d6ef779f397f6b1c0f133bbb8ebb6a55636e0",
+                "reference": "bf6d6ef779f397f6b1c0f133bbb8ebb6a55636e0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "~5.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "~2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Laracasts\\Generators\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeffrey Way",
+                    "email": "jeffrey@laracasts.com"
+                }
+            ],
+            "description": "Extend Laravel 5's generators.",
+            "keywords": [
+                "generators",
+                "laravel"
+            ],
+            "time": "2015-05-07 15:53:57"
         },
         {
             "name": "maximebf/debugbar",
@@ -3503,7 +3547,8 @@
     "stability-flags": {
         "guzzlehttp/guzzle": 20,
         "laracasts/flash": 20,
-        "sabre/xml": 20
+        "sabre/xml": 20,
+        "laracasts/generators": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

@@ -84,3 +84,30 @@ $factory->define(App\Eraser::class, function ($faker) {
         'updated_at' => $updatedAt
     ];
 });
+
+$factory->define(App\Bulk::class, function ($faker) {
+
+    $fileExtension = $faker->optional($weight = 0.3,$default = 'csv')->fileExtension;
+    $fileName = $faker->word . '.' . $fileExtension;
+
+    if($fileExtension == 'csv')
+    {
+        $mimeType = 'text/csv';
+        $result = 'Processed';
+        $processId = $fileName . Carbon::now()->timestamp;
+    } else {
+        $mimeType = $faker->mimeType;
+        $result = 'Invalid File Type';
+        $processId = '';
+    }
+
+    return [
+        'file_name' => $fileName,
+        'process_id' => $processId,
+        'result' => $result,
+        'mime_type' => $mimeType,
+        'file_extension' => $fileExtension,
+    ];
+});
+
+

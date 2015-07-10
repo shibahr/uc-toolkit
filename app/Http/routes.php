@@ -27,6 +27,10 @@ Route::post('itl','EraserController@itlStore');
 Route::get('ctl', 'EraserController@ctlIndex');
 Route::post('ctl','EraserController@ctlStore');
 
+//Bulk
+Route::get('bulk', 'BulkController@index');
+Route::post('bulk', 'BulkController@store');
+
 //Phones
 Route::resource('phone', 'PhoneController');
 

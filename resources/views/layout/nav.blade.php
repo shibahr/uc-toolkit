@@ -17,6 +17,7 @@
                 @if (!Auth::guest())
                 <li><a href="{{ url('/itl') }}">ITL</a></li>
                 <li><a href="{{ url('/ctl') }}">CTL</a></li>
+                <li><a href="{{ url('/bulk') }}">Bulk</a></li>
                 @endif
             </ul>
 

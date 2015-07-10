@@ -17,4 +17,9 @@ class Eraser extends Model
     {
         return $this->belongsTo('App\Phone');
     }
+
+    public function bulks()
+    {
+        return $this->belongsToMany('App\Bulk');
+    }
 }
