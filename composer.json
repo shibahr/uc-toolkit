@@ -9,7 +9,8 @@
         "laravel/framework": "5.1.*",
         "guzzlehttp/guzzle": "^6.0@dev",
         "laracasts/flash": "dev-master",
-        "sabre/xml": "dev-master"
+        "sabre/xml": "dev-master",
+        "keboola/csv": "dev-master"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

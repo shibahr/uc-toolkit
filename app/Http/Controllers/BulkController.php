@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Bulk;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Keboola\Csv\CsvFile;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -56,6 +57,16 @@ class BulkController extends Controller
             Flash::error('File type invalid.  Please use a CSV file format.');
             return redirect()->back();
         }
+
+        $csvFile = new CsvFile($file);
+
+        foreach($csvFile as $row)
+        {
+            $macList[] = $row;
+        }
+
+        dd($macList);
+
 
         $bulk->process_id = $fileName . '-' . Carbon::now()->timestamp;
 

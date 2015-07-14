@@ -29,10 +29,10 @@ class EraseTrustList extends Job implements SelfHandling
      * @param $macAddress
      * @param $tleType
      */
-    public function __construct($macAddress,$tleType)
+    public function __construct(Array $eraserArray)
     {
-        $this->macAddress = $macAddress;
-        $this->tleType = strtolower($tleType);
+        $this->macAddress = $eraserArray[0];
+        $this->tleType = strtolower($eraserArray[1]);
     }
 
     /**

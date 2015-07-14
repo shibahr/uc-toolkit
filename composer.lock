@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "10598376fb3d6a79ea69a5451b9576f9",
+    "hash": "727f3f5a4ed98cb1632bb656de130d4f",
     "packages": [
         {
             "name": "classpreloader/classpreloader",
@@ -537,6 +537,37 @@
                 "tokenizer"
             ],
             "time": "2015-03-11 20:06:43"
+        },
+        {
+            "name": "keboola/csv",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/keboola/php-csv.git",
+                "reference": "5a43f03e8df2ab33bfcfe4873e275200c5fee802"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/keboola/php-csv/zipball/5a43f03e8df2ab33bfcfe4873e275200c5fee802",
+                "reference": "5a43f03e8df2ab33bfcfe4873e275200c5fee802",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~3.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Keboola\\Csv": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Keboola CSV reader and writer",
+            "homepage": "http://keboola.com",
+            "time": "2015-04-16 11:36:46"
         },
         {
             "name": "laracasts/flash",
@@ -3548,6 +3579,7 @@
         "guzzlehttp/guzzle": 20,
         "laracasts/flash": 20,
         "sabre/xml": 20,
+        "keboola/csv": 20,
         "laracasts/generators": 20
     },
     "prefer-stable": true,

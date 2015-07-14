@@ -46,7 +46,7 @@ class EraserController extends Controller
         Log::info('Received ITL Erase request for: '.$request->input('macAddress'));
 
         $this->dispatch(
-            new EraseTrustList($request->input('macAddress'),'itl')
+            new EraseTrustList([$request->input('macAddress'),'itl'])
         );
 
         Flash::success('Processed Request.  Check table below for status.');
