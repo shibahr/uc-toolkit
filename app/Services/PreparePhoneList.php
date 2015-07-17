@@ -10,10 +10,8 @@ class PreparePhoneList {
 
     public $deviceArray;
 
-    public function __construct(Array $deviceArray)
+    public function __construct()
     {
-        $this->deviceArray = $deviceArray;
-
         $this->axl = new AxlSoap(
             app_path() . '/CiscoAPI/axl/schema/8.5/AXLAPI.wsdl',
             env('CUCM_AXL_LOCATION'),
@@ -29,14 +27,14 @@ class PreparePhoneList {
         );
     }
 
-    public function createList()
+    public function createList(Array $deviceArray)
     {
         //Get App User
         $appUserObj = $this->axl->getAppUser(env('CUCM_LOGIN'));
         Log::info('getAppUser(),$appUserObj,', [$appUserObj]);
 
         //Create Device Array
-        $appUserDeviceArray = createDeviceArray($appUserObj,$this->deviceArray);
+        $appUserDeviceArray = createDeviceArray($appUserObj,$deviceArray);
         Log::info('createDeviceArray(),$appUserDeviceArray,', [$appUserDeviceArray]);
 
         //Associate Devices to App User
@@ -44,7 +42,7 @@ class PreparePhoneList {
         Log::info('updateAppUser(),$res,', [$res]);
 
         //Create RIS Port Phone Array
-        $risArray = createRisPhoneArray($this->deviceArray);
+        $risArray = createRisPhoneArray($deviceArray);
         Log::info('createRisPhoneArray(),$risArray,', [$risArray]);
 
         //Get Device IP's from RIS Port

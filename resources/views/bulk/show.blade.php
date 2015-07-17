@@ -30,6 +30,7 @@
                 <tr>
                     <td>{{ $eraser->Phone->mac }}</td>
                     <td>{{ $eraser->ip_address }}</td>
+                    <td>{{ $eraser->eraser_type }}</td>
                     <td >
                         <i class="{{ $eraser->result == 'Success' ? 'fa fa-check' : 'fa fa-times' }}"></i>
                     </td>
@@ -50,8 +51,18 @@
 
     // DataTable
     $(function() {
-        $("#phone-table").DataTable({
-            order: [[2, "desc"]]
+        $("#bulk-table").DataTable({
+            order: [[2, "desc"]],
+            "aoColumnDefs": [
+                {
+                    "aTargets": [ 0 ], // Column to target
+                    "mRender": function ( data, type, full ) {
+                        // 'full' is the row's data object, and 'data' is this column's data
+                        // e.g. 'full is the row object, and 'data' is the phone mac
+                        return '<a href="/phone/' + full[0] + '">' + data + '</a>';
+                    }
+                }
+            ]
         });
     });
 </script>

@@ -11,7 +11,7 @@ class Eraser extends Model
      *
      * @var array
      */
-    protected $fillable = ['phone_id', 'ip_address','result'];
+    protected $fillable = ['phone_id', 'ip_address', 'eraser_type', 'result'];
 
     public function Phone()
     {

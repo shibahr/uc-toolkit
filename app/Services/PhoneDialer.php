@@ -102,9 +102,10 @@ class PhoneDialer {
             {
                 Log::info('dial(),response', [$response]);
 
-            } elseif(isset($response['name']) &&  $response['name'] == 'CiscoIPPhoneError')
+            }
+            elseif(isset($response['name']) &&  $response['name'] == '{}CiscoIPPhoneError')
             {
-                //Log an Auth error if status is 4
+                //Log an Error
                 switch($response['attributes']['Number'])
                 {
                     case 4:

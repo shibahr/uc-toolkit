@@ -19,20 +19,14 @@ class EraseTrustList extends Job implements SelfHandling
      * Create a new job instance.
      *
      * @param $macAddress
-     * @return \App\Jobs\EraseItl
+     * @return \App\Jobs\EraseTrustList
      */
 
-    private $macAddress;
-    private $tleType;
+    public $eraserArray;
 
-    /**
-     * @param $macAddress
-     * @param $tleType
-     */
     public function __construct(Array $eraserArray)
     {
-        $this->macAddress = $eraserArray[0];
-        $this->tleType = strtolower($eraserArray[1]);
+        $this->eraserArray = $eraserArray;
     }
 
     /**
@@ -43,34 +37,38 @@ class EraseTrustList extends Job implements SelfHandling
     public function handle()
     {
 
-        // Ensure $deviceArray is an array
-        if(!is_array($this->macAddress))
+        $macList = array_column($this->eraserArray, 'MAC');
+
+        $phoneList = new PreparePhoneList();
+
+        $risPortResults = $phoneList->createList($macList);
+
+        foreach($this->eraserArray as $row)
         {
-            $deviceArray[] = $this->macAddress;
-
-        } else {
-
-            $deviceArray = $this->macAddress;
-
+            $key = array_search($row['MAC'], array_column($risPortResults, 'DeviceName'));
+            $risPortResults[$key]['TLE'] = $row['TLE'];
+            $risPortResults[$key]['BULK_ID'] = $row['BULK_ID'];
         }
-
-        $phoneList = new PreparePhoneList($deviceArray);
-        $risPortResults = $phoneList->createList();
 
         //Loop Devices and erase Trust List
         foreach($risPortResults as $device)
         {
+
+
             //Create the Phone model
             $phone = Phone::firstOrCreate([
-                'mac' => $this->macAddress,
+                'mac' => $device['DeviceName'],
                 'description' => $device['Description']
             ]);
 
             //Start creating Eraser
-            $tleObj = new Eraser;
-            $tleObj->phone_id = $phone->id;
-            $tleObj->ip_address = $device['IpAddress'];
-            $tleObj->eraser_type = $this->tleType;
+            $tleObj = Eraser::create([
+                'phone_id' => $phone->id,
+                'ip_address' => $device['IpAddress'],
+                'eraser_type' => $device['TLE'],
+            ]);
+
+            $tleObj->bulks()->attach($device['BULK_ID']);
 
             if($device['IpAddress'] == "Unregistered/Unknown")
             {
@@ -82,11 +80,12 @@ class EraseTrustList extends Job implements SelfHandling
                 continue;
             }
 
+
             /*
              * Get the key press series
              */
             $keys = setKeys($device['Model'],$tleObj->eraser_type);
-            Log::info('setEraserKeys(),$keys', [$keys]);
+            Log::info('setKeys(),$keys', [$tleObj->eraser_type]);
 
             if(!$keys)
             {

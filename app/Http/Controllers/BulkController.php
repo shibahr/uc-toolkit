@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Bulk;
+use App\Jobs\EraseTrustList;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Keboola\Csv\CsvFile;
@@ -38,14 +39,14 @@ class BulkController extends Controller
 
     public function store(Request $request)
     {
-        $bulk = new Bulk;
 
         $file = $request->file('file');
         $fileName = $request->input('file_name');
         $fileName = $fileName ?: $file->getClientOriginalName();
 
-        $bulk->file_name = $fileName;
-
+        $bulk = Bulk::create([
+            'file_name' => $fileName
+        ]);
 
         if ($file->getClientMimeType() != "text/csv" && $file->getClientOriginalExtension() != "csv")
         {
@@ -62,17 +63,32 @@ class BulkController extends Controller
 
         foreach($csvFile as $row)
         {
-            $macList[] = $row;
+            $indexArray[] = $row;
         }
 
-        dd($macList);
+        for($i=0;$i<count($indexArray);$i++)
+        {
+            $eraserArray[$i]['MAC'] = $indexArray[$i][0];
+            $eraserArray[$i]['TLE'] = $indexArray[$i][1];
+            $eraserArray[$i]['BULK_ID'] = $bulk->id;
+        }
 
+        $this->dispatch(
+            new EraseTrustList($eraserArray)
+        );
 
+        $bulk->result = "Processed";
+        $bulk->mime_type = $file->getClientMimeType();
+        $bulk->file_extension = $file->getClientOriginalExtension();
         $bulk->process_id = $fileName . '-' . Carbon::now()->timestamp;
+        $bulk->save();
 
         $file->move(storage_path() . '/uploaded_files/',$fileName);
+
         Flash::success("File loaded successfully!  Check the Bulk Process table for progress on $bulk->process_id.");
-        return redirect()->back();
+
+        $bulks = Bulk::all();
+        return view('bulk.index', compact('bulks'));
 
     }
 

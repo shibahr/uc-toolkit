@@ -32,8 +32,8 @@ class RouteServiceProvider extends ServiceProvider
            return \App\Phone::where('mac', $mac)->first();
         });
 
-        $router->bind('bulk', function($file_name) {
-            return \App\Bulk::where('file_name', $file_name)->first();
+        $router->bind('bulk', function($process_id) {
+            return \App\Bulk::where('process_id', $process_id)->first();
         });
     }
 

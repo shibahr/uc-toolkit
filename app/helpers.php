@@ -143,7 +143,7 @@ function searchForIp($array,$value)
  */
 function setKeys($model,$tleType)
 {
-    switch($tleType) {
+    switch(strtolower($tleType)) {
 
         case 'itl':
 

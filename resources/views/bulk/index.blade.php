@@ -50,14 +50,14 @@
     // DataTable
     $(function() {
         $("#bulks-table").DataTable({
-            order: [[0, "desc"]],
+            order: [[4, "desc"]],
             "aoColumnDefs": [
                 {
                     "aTargets": [ 0 ], // Column to target
                     "mRender": function ( data, type, full ) {
                         // 'full' is the row's data object, and 'data' is this column's data
                         // e.g. 'full is the row object, and 'data' is the phone mac
-                        return '<a href="/bulk/' + full[0] + '">' + data + '</a>';
+                        return '<a href="/bulk/' + full[1] + '">' + data + '</a>';
                     }
                 }
             ]
