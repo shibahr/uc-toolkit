@@ -13,11 +13,16 @@
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="{{ url('/') }}">Home</a></li>
                 @if (!Auth::guest())
-                <li><a href="{{ url('/itl') }}">ITL</a></li>
-                <li><a href="{{ url('/ctl') }}">CTL</a></li>
-                <li><a href="{{ url('/bulk') }}">Bulk</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Trust List<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ url('/itl') }}">ITL</a></li>
+                        <li><a href="{{ url('/ctl') }}">CTL</a></li>
+                        <li><a href="{{ url('/bulk') }}">Bulk</a></li>
+                    </ul>
+                </li>
+                <li><a href="{{ url('/sql') }}">SQL</a></li>
                 @endif
             </ul>
 

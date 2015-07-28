@@ -139,6 +139,10 @@ class AxlSoap {
         }
     }
 
+    /**
+     * @param $sql
+     * @return \Exception|SoapFault
+     */
     public function executeSQLQuery($sql)
     {
         try {

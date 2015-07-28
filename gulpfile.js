@@ -1,52 +1,58 @@
 var elixir = require('laravel-elixir');
 
 elixir(function(mix) {
-    var dtPluginsDir = 'vendor/bower_components/datatables-plugins/';
+    var bowerLoc = '/vendor/bower_components/';
 
     // Copy jquery, bootstrap, flat-ui and font awesome
     mix.copy(
-            'vendor/bower_components/jquery/dist/jquery.js',
+            bowerLoc + 'jquery/dist/jquery.js',
             'resources/assets/js/jquery.js'
         ).copy(
-            'vendor/bower_components/bootstrap/less',
+            bowerLoc + 'bootstrap/less',
             'resources/assets/less/bootstrap'
         ).copy(
-            'vendor/bower_components/bootstrap/dist/js/bootstrap.js',
+            bowerLoc + 'bootstrap/dist/js/bootstrap.js',
             'resources/assets/js/bootstrap.js'
         ).copy(
-            'vendor/bower_components/bootstrap/dist/fonts',
+            bowerLoc + 'bootstrap/dist/fonts',
             'public/assets/fonts'
         ).copy(
-            'vendor/bower_components/fontawesome/less',
+            bowerLoc + 'fontawesome/less',
             'resources/assets/less/fontawesome'
         ).copy(
-            'vendor/bower_components/fontawesome/fonts',
+            bowerLoc + 'fontawesome/fonts',
             'public/assets/fonts'
         ).copy(
-            'vendor/bower_components/flat-ui/less',
+            bowerLoc + 'flat-ui/less',
             'resources/assets/less/flat-ui'
         ).copy(
-            'vendor/bower_components/flat-ui/dist/js/flat-ui.min.js',
+            bowerLoc + 'flat-ui/dist/js/flat-ui.min.js',
             'resources/assets/js/flat-ui.min.js'
         ).copy(
-            'vendor/bower_components/flat-ui/dist/fonts/glyphicons',
+            bowerLoc + 'flat-ui/dist/fonts/glyphicons',
             'public/assets/font/glyphicons'
         ).copy(
-            'vendor/bower_components/flat-ui/dist/fonts/lato',
+            bowerLoc + 'flat-ui/dist/fonts/lato',
             'public/assets/fonts/lato'
         );
 
     // Copy datatables
     mix.copy(
-            'vendor/bower_components/datatables/media/js/jquery.dataTables.js',
+            bowerLoc + 'datatables/media/js/jquery.dataTables.js',
             'resources/assets/js/dataTables.js'
         ).copy(
-            dtPluginsDir + 'integration/bootstrap/3/dataTables.bootstrap.css',
+            bowerLoc + 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css',
             'resources/assets/less/dataTables.less'
         ).copy(
-            dtPluginsDir + 'integration/bootstrap/3/dataTables.bootstrap.js',
+            bowerLoc + 'datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.js',
             'resources/assets/js/dataTables.bootstrap.js'
-        );
+        ).copy(
+            bowerLoc + 'datatables-tabletools/css/dataTables.tableTools.css',
+            'resources/assets/less/dataTables.tableTools.less'
+        ).copy(
+            bowerLoc + 'datatables-tabletools/js/dataTables.tableTools.js',
+            'resources/assets/js/dataTables.tableTools.js'
+    );
 
 
     // Combine scripts
@@ -54,11 +60,17 @@ elixir(function(mix) {
         'js/jquery.js',
         'js/bootstrap.js',
         'js/dataTables.js',
-        'js/dataTables.bootstrap.js'
+        'js/dataTables.bootstrap.js',
+        'js/dataTables.tableTools.js'
 
     ], 'public/assets/js/app.js', 'resources/assets');
 
     // Compile Less
-    mix.less('app.less', 'public/assets/css');
+    mix.less([
+        'app.less',
+        'dataTables.less',
+        'dataTables.tableTools.less'
+
+    ], 'public/assets/css');
 
 });

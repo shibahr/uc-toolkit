@@ -32,6 +32,11 @@ Route::resource('bulk','BulkController',
     ['except' => ['destroy','edit']]
 );
 
+//SQL
+Route::resource('sql','SqlController',
+    ['except' => ['destroy','edit']]
+);
+
 //Phones
 Route::resource('phone', 'PhoneController');
 
