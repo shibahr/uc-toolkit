@@ -14,7 +14,7 @@
 
 <div class="row">
     <div class="col-md-12 text-center">
-        <h1 class="login-header">Trust List Eraser</h1>
+        <h1 class="login-header">UC Toolkit</h1>
     </div>
 </div>
 
