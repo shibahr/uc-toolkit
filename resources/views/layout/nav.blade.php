@@ -22,7 +22,13 @@
                         <li><a href="{{ url('/bulk') }}">Bulk</a></li>
                     </ul>
                 </li>
-                <li><a href="{{ url('/sql') }}">SQL</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">SQL<span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="{{ url('/sql') }}">New Query</a></li>
+                        <li><a href="{{ url('/sql/history') }}">Query History</a></li>
+                    </ul>
+                </li>
                 @endif
             </ul>
 

@@ -33,6 +33,7 @@ Route::resource('bulk','BulkController',
 );
 
 //SQL
+Route::get('sql/history', 'SqlController@history');
 Route::resource('sql','SqlController',
     ['except' => ['destroy','edit']]
 );

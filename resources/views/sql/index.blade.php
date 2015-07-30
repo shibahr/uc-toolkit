@@ -16,7 +16,7 @@
                   <div class="form-group">
                     <div class="col-sm-8">
                       <textarea type="textarea" id="sqlStatement" name="sqlStatement" placeholder="Enter SQL Statement Here..."
-                             class="form-control"></textarea>
+                             class="form-control">{{{ $sql or '' }}}</textarea>
                     </div>
                       <button type="submit" class="btn btn-primary">
                         Submit
